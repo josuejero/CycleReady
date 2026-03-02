@@ -1,0 +1,115 @@
+{
+  "activities": [
+    {
+      "id": "cme-1",
+      "title": "Advanced Cardiology Case Review",
+      "provider": "Cardio Education Network",
+      "category": "Clinical",
+      "credits": 8,
+      "completionDate": "2025-09-10",
+      "status": "Accepted",
+      "notes": "Reviewed with cardiology quality team.",
+      "createdAt": "2025-09-11T09:00:00Z",
+      "timeline": [
+        {
+          "actor": "Clinician",
+          "action": "Submitted CME log",
+          "detail": "Includes cardiology patient follow-up notes.",
+          "timestamp": "2025-09-11T09:05:00Z"
+        },
+        {
+          "actor": "Reviewer",
+          "action": "Accepted",
+          "detail": "Credits approved after documentation review.",
+          "timestamp": "2025-09-12T15:22:00Z"
+        }
+      ],
+      "metadata": {
+        "fileName": "cardio-case-review.pdf",
+        "fileType": "application/pdf",
+        "sizeInBytes": 223488,
+        "uploadedAt": "2025-09-11T09:15:00Z",
+        "notes": "Full provider certificate included."
+      }
+    },
+    {
+      "id": "cme-2",
+      "title": "Telehealth Guidelines Update",
+      "provider": "Virtual Care Institute",
+      "category": "Educational",
+      "credits": 4,
+      "completionDate": "2025-10-01",
+      "status": "Pending Review",
+      "notes": "Pending reviewer feedback on new guidelines.",
+      "createdAt": "2025-10-02T13:34:00Z",
+      "timeline": [
+        {
+          "actor": "Clinician",
+          "action": "Submitted CME log",
+          "detail": "Includes telehealth policy reflections.",
+          "timestamp": "2025-10-02T13:40:00Z"
+        }
+      ]
+    },
+    {
+      "id": "cme-3",
+      "title": "Trauma Simulation Lab",
+      "provider": "State Trauma Council",
+      "category": "Simulation",
+      "credits": 6,
+      "completionDate": "2025-10-20",
+      "status": "Needs Correction",
+      "notes": "Reviewer asked for signed roster.",
+      "createdAt": "2025-10-22T11:22:00Z",
+      "timeline": [
+        {
+          "actor": "Clinician",
+          "action": "Submitted CME log",
+          "detail": "Includes simulation lab notes.",
+          "timestamp": "2025-10-22T11:25:00Z"
+        },
+        {
+          "actor": "Reviewer",
+          "action": "Needs Correction",
+          "detail": "Missing roster signature noted.",
+          "timestamp": "2025-10-23T08:05:00Z"
+        }
+      ]
+    }
+  ],
+  "keyDates": [
+    {
+      "id": "cycle-start",
+      "label": "Cycle Start",
+      "date": "2025-07-01",
+      "description": "NCCPA window opened for the 2025-2026 certification cycle.",
+      "type": "cycle"
+    },
+    {
+      "id": "midpoint-check",
+      "label": "Midpoint Check-In",
+      "date": "2025-12-31",
+      "description": "60-day checkpoint for checking MCC readiness.",
+      "type": "milestone"
+    },
+    {
+      "id": "metadata-deadline",
+      "label": "Metadata in Place",
+      "date": "2026-01-27",
+      "description": "Remind clinicians to upload supporting documents 120 days before NCCPA submission window closes.",
+      "type": "milestone"
+    },
+    {
+      "id": "cycle-end",
+      "label": "Cycle End",
+      "date": "2026-06-30",
+      "description": "All CME must be logged before NCCPA deadline; tracker will flag overdue items after 11:59 PM ET.",
+      "type": "cycle"
+    }
+  ],
+  "defects": {
+    "total": 3,
+    "critical": 0,
+    "lastUpdated": "2026-02-25T17:00:00Z"
+  }
+}
