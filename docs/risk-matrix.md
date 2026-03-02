@@ -1,0 +1,15 @@
+# CycleReady Phase 1 Risk Matrix
+
+This matrix captures the highest-priority risks for the Phase 1 static app proof-of-concept, maps them to workflows, and records the mitigation and testing actions that keep the QA owner in control before any code is written.
+
+| Risk | Likelihood | Impact | Associated Workflow(s) | Mitigation/Test Approach |
+| --- | --- | --- | --- | --- |
+| Clinicians misunderstand what "cycle progress" means, leading to incorrect expectations | Medium | High | Dashboard (cycle progress, readiness) | Mitigation: Define progress calculation in docs/stories and acceptance criteria; include tooltips on UI. Test: Playwright smoke scenario reads UI values against synthetic totals and fails early if mismatch. |
+| Logged CME entries are not persisted or localStorage gets corrupted | Medium | High | Log CME form + Submission History | Mitigation: Document localStorage contract; fallback to default synthetic JSON when parsing fails. Test: Manual verification that refreshing page after submitting retains entry; automation validates storage key exists. |
+| Synthetic data is mistaken for real credentials or clinician info | Low | Medium | All workflows (general data hygiene) | Mitigation: Explicitly note in README/docs that fake names/documents are used; use obviously synthetic names. Test: Peer review of docs/stories ensures language highlights synthetic nature. |
+| Reminders for missing documents trigger incorrectly (false positives/negatives) | Medium | Medium | Key dates/reminders + Upload Support | Mitigation: Define reminder conditions in acceptance criteria; use metadata flagging logic. Test: Automated scenarios toggle metadata state to ensure reminder banners appear/disappear as expected. |
+| Reviewer decisions are not tracked/historied, compromising release metrics | Medium | High | Submission detail + history trail + release readiness | Mitigation: Document change-trail structure, require history entries for each action. Test: Playwright script simulates review actions and verifies timeline entries plus summary counts (Accepted/Rejected). |
+| Release stakeholder metrics rely on unresolved defects or out-of-date data | Medium | High | Readiness panel + defect workflow | Mitigation: Source metrics from static JSON representing GitHub issues and tie defect count to mocked readiness state. Test: Validate that mock defect data changes impact readiness label (e.g., mark as "At Risk" if any critical defect exists). |
+| UI workflow does not sufficiently cover all five believable flows, leaving gaps for QA | Low | Medium | Dashboard, Log CME, Upload, History, Key Dates | Mitigation: Document story coverage and acceptance criteria; use test strategy to focus on each workflow. Test: Traceability matrix ensures each workflow is exercised by at least one Playwright test and one manual check. |
+
+Keeping these risks and mitigations visible helps the QA owner assess scope before development begins and ensures testers can follow through once the static demo exists.
