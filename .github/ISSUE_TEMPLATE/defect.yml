@@ -1,0 +1,120 @@
+name: Defect report
+about: Capture all triage-ready information so the GitHub Project board fields stay in sync with the lifecycle.
+title: "[Defect] "
+labels:
+  - defect
+  - needs triage
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Defect information
+        Use this form to log every real bug discovered during Phase 6. Attach screenshots, link the related story/test case, and pick options that match the GitHub Project triage fields.
+  - type: input
+    attributes:
+      label: Summary
+      description: Brief, outcome-focused headline ("Dashboard credit total is wrong after metadata upload").
+      placeholder: Enter a one-line summary.
+      required: true
+  - type: input
+    attributes:
+      label: Environment
+      description: Browser/OS/build or release channel where the defect reproduces.
+      placeholder: Chrome 120 on macOS 14 (prod build)
+      required: true
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: List precise actions; include data entry, navigation, filters, etc.
+      placeholder: 1. Log in as...
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected result
+      description: State the correct behavior or acceptance criteria.
+      placeholder: The reminder count should drop to 0.
+      required: true
+  - type: textarea
+    attributes:
+      label: Actual result
+      description: Describe the incorrect behavior you observed (include status codes, UI text, or log snippets).
+      placeholder: Reminder count stays at 2 and log shows "metadata missing".
+      required: true
+  - type: textarea
+    attributes:
+      label: Screenshots
+      description: Drag-and-drop any relevant screenshots and/or add a short alt text summary. If no image is attached yet, write "TBD" and update once added.
+      placeholder: Screenshot shows giveaway banner in the wrong column.
+      required: true
+  - type: dropdown
+    attributes:
+      label: Severity
+      description: Base severity on customer impact (Severity custom field in the project).
+      options:
+        - Sev1 - Blocker
+        - Sev2 - Critical
+        - Sev3 - Major
+        - Sev4 - Minor
+      required: true
+  - type: dropdown
+    attributes:
+      label: Priority
+      description: Align priority with the planned release or regression goals.
+      options:
+        - P1 - Fix now
+        - P2 - Fix before next release
+        - P3 - Fix in a future release
+        - P4 - Informational
+      required: true
+  - type: dropdown
+    attributes:
+      label: Repro rate
+      description: Choose how often the defect reproduces for the Repro Rate project field.
+      options:
+        - Always
+        - Intermittent
+        - Rare
+      required: true
+  - type: dropdown
+    attributes:
+      label: Found in
+      description: Specify the automation or manual stream that uncovered the issue.
+      options:
+        - Functional
+        - Smoke
+        - Regression
+        - UAT
+      required: true
+  - type: input
+    attributes:
+      label: Linked story/test case
+      description: Paste the GitHub issue/PR/story ID or test case reference that this defect blocks or validates.
+      placeholder: #45 or STORY-102
+      required: true
+  - type: input
+    attributes:
+      label: Story ID
+      description: Optional ID that ties the defect back to the owning story or product epic.
+      placeholder: ST-12345
+      required: false
+  - type: input
+    attributes:
+      label: Target fix version
+      description: Release name or tag where the team plans to land the fix.
+      placeholder: v1.2.0
+      required: false
+  - type: dropdown
+    attributes:
+      label: Release blocker
+      description: Flag this defect if it must be resolved before shipping the target fix version.
+      options:
+        - Yes
+        - No
+      required: true
+  - type: input
+    attributes:
+      label: Owner
+      description: Person or squad responsible for resolving the issue (mirrors the Owner project field).
+      placeholder: @username or "QA Squad"
+      required: false
