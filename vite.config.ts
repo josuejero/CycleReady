@@ -6,7 +6,6 @@ export default defineConfig({
   base: '/CycleReady/',
   plugins: [react()],
   build: {
-    manifest: true,
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),

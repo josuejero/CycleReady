@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node scripts/sync-static.js && vite build",
     "preview": "vite preview",
     "test:e2e": "playwright test",
     "docs:pdf": "PATH=\"$(python3 -c 'import site, os; print(os.path.join(site.USER_BASE, \"bin\"))'):$PATH\" pandoc docs/uat-plan.md -o public/assets/cycleready-uat-packet.pdf --pdf-engine=weasyprint"

@@ -1,0 +1,3381 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+.github/
+  ISSUE_TEMPLATE/
+    defect.yml
+  workflows/
+    pages.yml
+    playwright-smoke.yml
+docs/
+  wireframes/
+    dashboard.md
+    history-page.md
+    log-cme-form.md
+    release-summary-page.md
+    reminders-key-dates-view.md
+    reviewer-detail-page.md
+    support-upload-flow.md
+  acceptance-criteria-v1.md
+  acceptance-criteria-v2.md
+  design-review-notes.md
+  playwright-smoke.md
+  requirements-traceability-matrix.md
+  risk-matrix.md
+  stories.md
+  story-review-before-after.md
+  test-cases-functional.md
+  test-strategy.md
+  triage-guidelines.md
+  triage-meeting-notes.md
+  uat-plan.md
+  uat-results.md
+  uat-scripts.md
+  uat-signoff-sheet.md
+public/
+  assets/
+    portfolio/
+      defect-board.svg
+      release-summary.svg
+      uat-checklist.svg
+    cycleready-uat-packet.pdf
+src/
+  components/
+    HistoryList.tsx
+    KeyDatesPanel.tsx
+    LogForm.tsx
+    ReleaseRoomPage.tsx
+    ReleaseSummaryPanel.tsx
+    RemindersPanel.tsx
+    ReviewerPanel.tsx
+    StatusChip.tsx
+    UploadSimulator.tsx
+  data/
+    release-room.ts
+    seed.json
+    seed.ts
+    types.ts
+  utils/
+    date.ts
+    format.ts
+  App.tsx
+  index.css
+  main.tsx
+  release-room.tsx
+  release-summary.tsx
+tests/
+  smoke/
+    cme-smoke.spec.ts
+.gitignore
+index.html
+package.json
+playwright.config.ts
+postcss.config.cjs
+README.md
+release-room.html
+release-summary.html
+tailwind.config.ts
+tsconfig.json
+vite.config.ts
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path=".github/ISSUE_TEMPLATE/defect.yml">
+name: Defect report
+about: Capture all triage-ready information so the GitHub Project board fields stay in sync with the lifecycle.
+title: "[Defect] "
+labels:
+  - defect
+  - needs triage
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Defect information
+        Use this form to log every real bug discovered during Phase 6. Attach screenshots, link the related story/test case, and pick options that match the GitHub Project triage fields.
+  - type: input
+    attributes:
+      label: Summary
+      description: Brief, outcome-focused headline ("Dashboard credit total is wrong after metadata upload").
+      placeholder: Enter a one-line summary.
+      required: true
+  - type: input
+    attributes:
+      label: Environment
+      description: Browser/OS/build or release channel where the defect reproduces.
+      placeholder: Chrome 120 on macOS 14 (prod build)
+      required: true
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: List precise actions; include data entry, navigation, filters, etc.
+      placeholder: 1. Log in as...
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected result
+      description: State the correct behavior or acceptance criteria.
+      placeholder: The reminder count should drop to 0.
+      required: true
+  - type: textarea
+    attributes:
+      label: Actual result
+      description: Describe the incorrect behavior you observed (include status codes, UI text, or log snippets).
+      placeholder: Reminder count stays at 2 and log shows "metadata missing".
+      required: true
+  - type: textarea
+    attributes:
+      label: Screenshots
+      description: Drag-and-drop any relevant screenshots and/or add a short alt text summary. If no image is attached yet, write "TBD" and update once added.
+      placeholder: Screenshot shows giveaway banner in the wrong column.
+      required: true
+  - type: dropdown
+    attributes:
+      label: Severity
+      description: Base severity on customer impact (Severity custom field in the project).
+      options:
+        - Sev1 - Blocker
+        - Sev2 - Critical
+        - Sev3 - Major
+        - Sev4 - Minor
+      required: true
+  - type: dropdown
+    attributes:
+      label: Priority
+      description: Align priority with the planned release or regression goals.
+      options:
+        - P1 - Fix now
+        - P2 - Fix before next release
+        - P3 - Fix in a future release
+        - P4 - Informational
+      required: true
+  - type: dropdown
+    attributes:
+      label: Repro rate
+      description: Choose how often the defect reproduces for the Repro Rate project field.
+      options:
+        - Always
+        - Intermittent
+        - Rare
+      required: true
+  - type: dropdown
+    attributes:
+      label: Found in
+      description: Specify the automation or manual stream that uncovered the issue.
+      options:
+        - Functional
+        - Smoke
+        - Regression
+        - UAT
+      required: true
+  - type: input
+    attributes:
+      label: Linked story/test case
+      description: Paste the GitHub issue/PR/story ID or test case reference that this defect blocks or validates.
+      placeholder: #45 or STORY-102
+      required: true
+  - type: input
+    attributes:
+      label: Story ID
+      description: Optional ID that ties the defect back to the owning story or product epic.
+      placeholder: ST-12345
+      required: false
+  - type: input
+    attributes:
+      label: Target fix version
+      description: Release name or tag where the team plans to land the fix.
+      placeholder: v1.2.0
+      required: false
+  - type: dropdown
+    attributes:
+      label: Release blocker
+      description: Flag this defect if it must be resolved before shipping the target fix version.
+      options:
+        - Yes
+        - No
+      required: true
+  - type: input
+    attributes:
+      label: Owner
+      description: Person or squad responsible for resolving the issue (mirrors the Owner project field).
+      placeholder: @username or "QA Squad"
+      required: false
+</file>
+
+<file path=".github/workflows/playwright-smoke.yml">
+name: Playwright Smoke Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  smoke:
+    name: smoke suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npx playwright install --with-deps
+      - run: npm run test:e2e
+      - name: Upload Playwright HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+</file>
+
+<file path="docs/wireframes/dashboard.md">
+# Dashboard Wireframe
+
+## Purpose
+Summarize clinician readiness, highlight overdue reminders, and provide jump-off points for logging CME, reviewing history, and checking release readiness.
+
+## Layout
+- **Header row:** Branding + user avatar, cycle selector, and primary call-to-actions (Log CME, Upload Support).
+- **Left column (60% width):** Large cycle-progress card with radial meter, earned vs. required credits, last activity date, and quick stats for credit buckets (clinical, educational, etc.).
+- **Right column (40% width):** Stack of reminder cards (missing metadata, overdue dates) and a condensed release readiness panel that shows reviewer-accepted counts, defects, and target completion percentage.
+- **Below columns:** Horizontal timeline of key dates with colored bars (on track, due soon, overdue) and a mini history feed showing the last three status changes.
+
+## Interactions
+- Card footers link to supporting flows (history, reviewer detail, reminders).
+- Reminder cards display CTA buttons (e.g., "Upload metadata") and dismiss once the condition clears.
+- Timeline bars open a lightbox with date rules and contextual actions.
+</file>
+
+<file path="docs/wireframes/history-page.md">
+# History Page Wireframe
+
+## Purpose
+Surface all submissions with filterable statuses so clinicians and reviewers can spot trends, missing metadata, and pending actions.
+
+## Layout
+- **Sticky header:** Search bar + filter pills (All, Pending Review, Accepted, Rejected, Needs Correction) + sort toggle (Date desc/asc).
+- **Primary list:** Vertical list of cards, each containing:
+  - Left section: CME title, credited value, submission date, reviewer status chip (color-coded).
+  - Right section: Action buttons (View detail, Upload metadata) and a mini checklist (metadata, reviewer note, reminders).
+  - Divider row showing reviewer decision summary and any missing field banners.
+- **Sidebar (right):** Summary of counts per status, next reminder countdown, quick CTA to log new CME.
+
+## Interactions
+- Filtering toggles the list with animated transitions and updates the sidebar counts.
+- Cards expand on hover to show reviewer comments and missing metadata bullets.
+- If there are no submissions for a filter, show an empty state message with contextual guidance and a CTA to log a new activity.
+</file>
+
+<file path="docs/wireframes/log-cme-form.md">
+# Log CME Form Wireframe
+
+## Purpose
+Capture a new CME entry with structured metadata, validate required fields, and reassure clinicians on what is missing before submission.
+
+## Layout
+- **Header bar:** Title "Log CME" plus breadcrumb/back control and save/submit buttons that stay sticky at top when scrolling.
+- **Form grid:** Two-column layout with sections:
+  - Left column: Title input, provider dropdown, category pills, credit value stepper, completion date picker, and related note textarea.
+  - Right column: Context panel showing cycle requirements, current progress, and inline helper text.
+- **Metadata row (below main fields):** Attachment placeholder (click to associate support) and status badge showing whether metadata exists.
+- **Footer:** Submission status toggle (Draft vs. Submit) and a list of detected missing required fields.
+
+## Interactions
+- Each required field shows inline validation messages (title, credits, date, category) and highlights the label in red if needed.
+- Helper panel updates live to reflect the credit totals once values change.
+- Clicking "Submit" with validation errors surfaces a persistent banner at the top describing why the log cannot be saved.
+</file>
+
+<file path="docs/wireframes/release-summary-page.md">
+# Release Summary Page Wireframe
+
+## Purpose
+Highlight readiness for the next release cycle with metrics, risks, and a quick view of unresolved reviewer and support issues.
+
+## Layout
+- **Header:** Release name, target date, overall readiness score with gauge, and primary action (Generate release report).
+- **Three sections below:**
+  - Section 1: Metrics grid (Accepted submissions count, In-review, Needs correction, Critical defects) with sparklines tracking the last few days.
+  - Section 2: Risk list showing blockers (e.g., overdue documentation, review gaps) with severity chips and owner tags.
+  - Section 3: Dependency board linking to reviewer detail and release stakeholders, with cards for "Awaiting QA sign-off" and "Blocked by documentation".
+- **Sidebar:** Timeline of release milestones plus a tiny reminder summary connecting to key dates view.
+
+## Interactions
+- Gauges update as statuses change; hovering reveals definitions.
+- Risk chips reveal mitigation steps and owners.
+- Dependency cards can be expanded into the reviewer detail view or history page.
+</file>
+
+<file path="docs/wireframes/reminders-key-dates-view.md">
+# Reminders & Key Dates View Wireframe
+
+## Purpose
+Provide a dedicated space for tracking critical deadlines, overdue reminders, and actions tied to missing documentation or upcoming certifications.
+
+## Layout
+- **Top banner:** "Key Dates & Reminders" with a date picker to choose the reference date (default today).
+- **Three-column grid:**
+  - Column 1: Upcoming deadlines list showing date, type (certification, review, support), status (on track, due soon, overdue), and days remaining/overdue.
+  - Column 2: Reminder stream (cards) for missing metadata, incomplete reviewer feedback, or pending uploads, each with severity icon and CTA.
+  - Column 3: Rules panel displaying how the date thresholds are calculated (e.g., "Overdue once past 14 days from due date") and quick toggles for email/SMS reminders.
+- **Bottom table:** Historical snapshot showing how reminders have moved (e.g., escalations from pending to overdue) with filter options.
+
+## Interactions
+- Date picker adjusts all columns, emphasizing the correct start-of-day zone.
+- Clicking a reminder card opens contextual help about how to resolve it.
+- Rules panel contains inline examples to clarify vague phrasing (e.g., what "due soon" means in days).
+</file>
+
+<file path="docs/wireframes/reviewer-detail-page.md">
+# Reviewer Detail Page Wireframe
+
+## Purpose
+Give reviewers a complete snapshot of a submission along with clear status controls and decision context.
+
+## Layout
+- **Header:** Submission title, clinician name, status badge, reviewer decision buttons (Accept, Needs Correction, Reject) aligned horizontally with short helper text explaining status definitions.
+- **Main grid:**
+  - Left panel: Submission metadata (credits, category, provider, completion date), attached support summary, clinician notes, and key timeline events (log created, metadata added, previous review actions).
+  - Right panel: Reviewer decision trail (chronological list of reviewer notes with timestamps), inline comment input, and reminder of UAT criteria.
+- **Footer:** Decision confirmation area with optional note field and CTA to "Publish review note" plus toggles for notifying clinician/release team.
+
+## Interactions
+- Buttons show tooltips to explain each decision’s downstream effect and require confirmation if metadata is missing.
+- Reviewer trail updates live, and selecting a timeline entry scrolls to that section.
+- Lightweight in-line validation warns when reviewer tries to accept without comment on a correction history.
+</file>
+
+<file path="docs/wireframes/support-upload-flow.md">
+# Support Upload Flow Wireframe
+
+## Purpose
+Allow clinicians to attach supporting metadata/documents for a CME entry and immediately see the impact on reminders.
+
+## Layout
+- **Top header:** "Attach Supporting Documentation" with a progress indicator (Step 2 of 3 - select entry, upload metadata, confirm).
+- **Main body split:**
+  - Left panel lists pending CME logs (status chips and dates) with a radio selector.
+  - Right panel is the upload area featuring:
+    - Drop zone (drag or click to attach) with suggested file types and a visual outline.
+    - Fields for document type dropdown, pseudo file name, upload date (auto-filled), and notes.
+    - Buttons: "Save Metadata" (primary) and "Cancel".
+- **Bottom row:** Reminder preview showing which log entry’s reminder will clear once metadata is saved.
+
+## Interactions
+- Selecting a different CME entry reloads the drop zone and metadata form with existing data.
+- Upload triggers a mock progress bar and then shows a success toast.
+- Saving metadata updates the reminder preview to describe the cleared condition (e.g., "Missing support for Cardiology update").
+</file>
+
+<file path="docs/acceptance-criteria-v1.md">
+# CycleReady Phase 1 Acceptance Checklist (Version 1)
+
+This checklist consolidates the QA-reviewed acceptance criteria into measurable outcomes for each of the ten CycleReady stories, emphasizing what "done" looks like for the MVP. Every criterion ties back to the static Vite + React + TypeScript + Tailwind app, synthetic JSON/localStorage data, and the five workflows described in the project description.
+
+| Story | Measurable Outcome | Acceptance Detail |
+| --- | --- | --- |
+| Clinician: see current cycle progress | Dashboard reflects actual totals | Total logged credits (sum from synthetic data/localStorage) and cycle percentage display concurrently; when a new CME entry is added locally, the figures refresh without page reload. |
+| Clinician: log a CME activity | CME form validates and persists | Log CME form requires title, credits, completion date, category, provider; submission stores an entry in localStorage flagged with "Pending Review" and adds an entry to Submission History within 200ms. |
+| Clinician: attach supporting documentation metadata | Metadata attaches to CME entry | Upload Support simulates metadata capture (document type, pseudo-filename, date); metadata persists to localStorage and surfaces as a badge under the related CME entry. |
+| Clinician: view past submissions/statuses | History view is accurate and filterable | Submission History lists each CME entry with reviewer status (Submitted/Pending/Rejected/Corrected), missing document indicators, and optional reviewer notes; sorting by newest submission works, and items reflect localStorage state. |
+| Clinician: see upcoming key dates | Key Dates panel shows deadlines | Key Dates cards show at least three dates with label, deadline (formatted MM/DD/YYYY), days until due, overdue highlighting (red) when date < today, and link to relevant cycle milestone; data comes from synthetic JSON using the system date. |
+| Clinician: see reminders for missing info | Reminder banners trigger correctly | Reminder banners identify entries lacking metadata, listing title plus action "Upload support metadata"; banners disappear once metadata is stored locally. |
+| Reviewer: view submission detail | Reviewer page mirrors clinician data | Submission detail displays the CME activity info, metadata, and clinician notes taken from the shared localStorage payload; load states and skeleton UI exist until data is ready. |
+| Reviewer: mark status | Reviewer actions update state | Accept/Needs Correction/Reject buttons update status fields in localStorage, append reviewer note with timestamp, and push status change to Submission History and readiness metrics immediately. |
+| Reviewer: history trail | Change log is chronological | Detail view shows a timeline of actions (clinician adds metadata, reviewer decision, reminder triggered) with actor, action, and ISO timestamps; entries append in order. |
+| Release stakeholder: view readiness metrics | Dashboard integrates metrics and defects | Readiness panel shows cycle completion percentage, ratio of accepted submissions to pending, and open defect count (mocked from JSON); readiness status (e.g., "On Track" if ≥80% credits logged and zero critical defects) is derived from the same localStorage + synthetic defect data.
+
+Each row ties directly to the five workflows and reinforces the static-app constraints (local data, mocked documents, GitHub-based defect framing, and Playwright-targeted automation-ready behaviors).
+</file>
+
+<file path="docs/acceptance-criteria-v2.md">
+# Phase 2 Acceptance Criteria (v2)
+
+## Deliverable completion
+- `docs/wireframes/` contains low-fidelity layouts for the dashboard, log CME form, support upload flow, history page, reviewer detail page, reminders/key-dates view, and release summary page.
+- Each wireframe clarifies layout, calls-to-action, and interaction notes for the intended workflow.
+- `docs/design-review-notes.md` logs a mock review where the QA, Product, and End User personas evaluated clarity and surfaced gaps in wording, error states, empty states, and date logic.
+
+## Readiness guardrails (informed by the review)
+- All critical interactions (form submission, metadata upload, reminders) have explicitly called-out error states or helper text so testers can assert when a field is invalid.
+- Every filter or list view presents a purposeful empty state message and CTA rather than blank space, fulfilling the "missing empty states" concern.
+- Reminder and key-date copy explains the intended action (e.g., "Upload metadata for Cardiology log") and documents the date/rule thresholds (how many days before a deadline it flips to "due soon").
+- Review-status language is consistent across the dashboard, history, reviewer detail, and release summary (Accepted / Pending Review / Needs Correction / Rejected) so stakeholders and QA understand expectations.
+- Support upload steps clarify whether attachments are required and include visual clues for placeholder vs. completed states, addressing the vague reminder wording discovered during the mock review.
+
+## Validation checklist
+1. Confirm each wireframe file mentions how the UI should handle missing data or errors.
+2. Verify the design-review notes capture the issues listed above and map to specific roles.
+3. Reference this document when planning Phase 3 build work so the ambiguities flagged in design review are resolved before writing code.
+</file>
+
+<file path="docs/design-review-notes.md">
+# Design Review Notes
+
+## Context
+Phase 2 mock design review (self-led) to validate the proposed wireframes before development. Roles played: QA, Product, and End User, each challenging clarity.
+
+## Attendees
+- QA (self)
+- Product (self)
+- End User (self)
+
+## Notes
+### QA perspective
+- Error states for the log CME form are still vague; we need explicit copy for each required field and a system message for failed submissions so we can test the failure paths.
+- Reminder cards lack empty states—when there are no missing uploads, we should show a reassuring message rather than collapsed space so testers know the feature ran.
+- Date rules used on the key dates view are undefined. We need to document how "due soon" and "overdue" thresholds are calculated so QA can script test cases.
+
+### Product perspective
+- Reminder wording in both the dashboard and reminders view is too generic; we should tighten it to say exactly what action is needed, e.g., "Upload provider certificate metadata for Cardiology CME log." This avoids misinterpretation by clinicians.
+- The release summary page uses "Ready"/"Not Ready" interchangeably with reviewer statuses, which confuses stakeholders. Standardize review-status language (Accepted/Pending/Needs Correction/Rejected) across all tiles.
+- Empty history filters need guidance text that encourages logging a new activity rather than presenting a blank table.
+
+### End User perspective
+- Support upload flow doesn't make it clear whether a file is required before saving metadata. The UI should show a placeholder state prompting for attachments and clarify when metadata-only saves are acceptable.
+- Reviewer detail timeline should define which actions are visible to the clinician versus reviewer to reduce anxiety about who made a change.
+- The reminders/key-dates date selector needs to specify timezone context since clinicians may be near midnight when the system recalculates days remaining.
+
+## Action Items
+1. Document clear error copy and hooks for QA assertions on the log CME form (QA).
+2. Define empty-state messaging for reminders, history filters, and reviewer cubes (Product).
+3. Standardize review-status terminology and clarify release summary language (Product).
+4. Spell out date-rule calculations and timezone assumptions in the reminders view (QA + End User).
+5. Ensure support upload flow shows mandatory vs. optional metadata fields (End User).
+</file>
+
+<file path="docs/playwright-smoke.md">
+# Playwright Smoke Test Suite
+
+This suite only covers the four critical user-visible scenarios called out for Phase 7. Each test seeds `localStorage` from `src/data/seed.json` before the app loads so assertions always see the same history/reminder state.
+
+## Covered scenarios
+
+- successful CME submission surfaces the confirmation banner and adds the new log to history
+- invalid submissions are blocked with a validation banner and no state change
+- reminders highlight activities missing supporting documentation
+- the history card's “Latest action” detail reflects reviewer updates after a status change
+
+## Running the suite
+
+1. Install dependencies if you haven't already: `npm install`.
+2. Start the Playwright suite: `npm run test:e2e`.
+3. Once the run finishes, open the generated report at `playwright-report/index.html` to review the detailed results, traces, and screenshots.
+
+The report directory can be uploaded as a standalone GitHub Actions artifact (the workflow already does this) or zipped manually for release documentation. Re-running the suite simply overwrites the `playwright-report` folder, so copy the folder before running again if you need separate “before/after” artifacts.
+
+## Capturing the intentionally failing artifact and regression rerun
+
+1. Introduce a temporary regression (e.g., comment out the validation message expectation in `tests/smoke/cme-smoke.spec.ts` or force the app state to skip the `CME log saved locally` banner).
+2. Run `npm run test:e2e` and archive the `playwright-report` output; you now have a failing artifact to demonstrate the regression.
+3. Revert the regression (restore the expectation or fix the UI) and re-run the suite. Save the new `playwright-report` folder to document the fixed regression run.
+
+Keeping both sets of HTML reports is the easiest way to provide “evidence for the repo and release packet” that Playwright recommends.
+</file>
+
+<file path="docs/requirements-traceability-matrix.md">
+# Requirements Traceability Matrix
+
+This matrix tracks key Phase 4 requirements from the story review and shows where they land in acceptance criteria and functional tests. It keeps the QA runway honest by preventing requirements from drifting away from test coverage.
+
+| Requirement ID | Requirement description | Source story or artifact | Acceptance criteria (summary) | Functional test case(s) |
+| --- | --- | --- | --- | --- |
+| RQ-001 | New CME entries appear immediately in History when required fields are filled. | Story: “Clinician: log a CME activity” (see `docs/acceptance-criteria-v1.md`). | Submission adds the entry to History at the top within the same session without a reload. | `TC-001` |
+| RQ-002 | Credits are required for submission; missing credits block form entry and show inline validation. | Story: “Clinician: log a CME activity” + Phase 4 improved criterion from `docs/story-review-before-after.md`. | Submit button stays disabled (or rejected) when credits are blank and shows an inline message next to the credits field. | `TC-002` |
+| RQ-003 | Dashboard surfaces reminders when supporting documentation is still needed for documentation-required entries. | Story: “Clinician: attach supporting documentation metadata” + Phase 4 reminder criterion. | Dashboard displays a reminder banner with a link to the detail view on the next load after the supporting info is missing. | `TC-003` |
+
+As new Phase 4 requirements arrive, expand this table first and then update the related acceptance criteria and test cases so every row stays traceable. Use the IDs above when referencing requirements in pull requests or traceability reports.
+</file>
+
+<file path="docs/risk-matrix.md">
+# CycleReady Phase 1 Risk Matrix
+
+This matrix captures the highest-priority risks for the Phase 1 static app proof-of-concept, maps them to workflows, and records the mitigation and testing actions that keep the QA owner in control before any code is written.
+
+| Risk | Likelihood | Impact | Associated Workflow(s) | Mitigation/Test Approach |
+| --- | --- | --- | --- | --- |
+| Clinicians misunderstand what "cycle progress" means, leading to incorrect expectations | Medium | High | Dashboard (cycle progress, readiness) | Mitigation: Define progress calculation in docs/stories and acceptance criteria; include tooltips on UI. Test: Playwright smoke scenario reads UI values against synthetic totals and fails early if mismatch. |
+| Logged CME entries are not persisted or localStorage gets corrupted | Medium | High | Log CME form + Submission History | Mitigation: Document localStorage contract; fallback to default synthetic JSON when parsing fails. Test: Manual verification that refreshing page after submitting retains entry; automation validates storage key exists. |
+| Synthetic data is mistaken for real credentials or clinician info | Low | Medium | All workflows (general data hygiene) | Mitigation: Explicitly note in README/docs that fake names/documents are used; use obviously synthetic names. Test: Peer review of docs/stories ensures language highlights synthetic nature. |
+| Reminders for missing documents trigger incorrectly (false positives/negatives) | Medium | Medium | Key dates/reminders + Upload Support | Mitigation: Define reminder conditions in acceptance criteria; use metadata flagging logic. Test: Automated scenarios toggle metadata state to ensure reminder banners appear/disappear as expected. |
+| Reviewer decisions are not tracked/historied, compromising release metrics | Medium | High | Submission detail + history trail + release readiness | Mitigation: Document change-trail structure, require history entries for each action. Test: Playwright script simulates review actions and verifies timeline entries plus summary counts (Accepted/Rejected). |
+| Release stakeholder metrics rely on unresolved defects or out-of-date data | Medium | High | Readiness panel + defect workflow | Mitigation: Source metrics from static JSON representing GitHub issues and tie defect count to mocked readiness state. Test: Validate that mock defect data changes impact readiness label (e.g., mark as "At Risk" if any critical defect exists). |
+| UI workflow does not sufficiently cover all five believable flows, leaving gaps for QA | Low | Medium | Dashboard, Log CME, Upload, History, Key Dates | Mitigation: Document story coverage and acceptance criteria; use test strategy to focus on each workflow. Test: Traceability matrix ensures each workflow is exercised by at least one Playwright test and one manual check. |
+
+Keeping these risks and mitigations visible helps the QA owner assess scope before development begins and ensures testers can follow through once the static demo exists.
+</file>
+
+<file path="docs/stories.md">
+# CycleReady Phase 1 Stories
+
+This document treats the ten provided persona-driven needs as user stories and captures two passes of acceptance notes: a deliberately weak first pass (to show typical vague requirements) and a QA-reviewed second pass that drives clarity, testability, and outcome focus. Each story references the five CycleReady workflows (dashboard, log CME, upload support, submission history, key dates/reminders) and the synthetic stack chosen for the MVP.
+
+## Clinician Stories
+
+1. **As a clinician, I can see my current cycle progress.**
+   - _First pass:_ The dashboard shows how far along I am in the cycle, maybe with progress bars or numbers.
+   - _QA-reviewed:_ Dashboard presents total logged credits (sum from synthetic JSON), cycle progress percentage (earned/required), and last activity date. Testable by comparing expected totals from the JSON seed data and ensuring progress percentage updates when localStorage entries are added.
+
+2. **As a clinician, I can log a CME activity with credits and date.**
+   - _First pass:_ There is a form to add CME activities that includes credits and a date field.
+   - _QA-reviewed:_ The Log CME workflow validates required fields (activity title, credit value, completion date, category, provider, and optional note) and persists the new entry into localStorage. After submission, the dashboard credit total refreshes immediately and the history list shows the new entry with status "Pending Review." The form also displays inline errors if fields are missing.
+
+3. **As a clinician, I can attach supporting documentation metadata.**
+   - _First pass:_ I can upload documents to back up my CME log.
+   - _QA-reviewed:_ The Upload Support workflow captures metadata (file name placeholder, document type, associated CME entry ID, and upload date) without sending actual files; metadata is stored alongside the related CME log entry in localStorage. UI shows a badge or tag when metadata exists and flags missing uploads for a CME entry for reminders later.
+
+4. **As a clinician, I can view past submissions and statuses.**
+   - _First pass:_ There is some history page that lists what I submitted before.
+   - _QA-reviewed:_ The Submission History view lists all synthetic submissions grouped by their reviewer status (Submitted, Pending Review, Rejected, Corrected). Each row shows the CME title, credits, submission date, reviewer decision note (if any), and any missing documentation banner. Filtering by status and sorting by date should be possible, and the data reflects localStorage state.
+
+5. **As a clinician, I can see upcoming key dates.**
+   - _First pass:_ The app has a section for dates.
+   - _QA-reviewed:_ The Key Dates/Reminders area surfaces at least three upcoming certification/review deadlines (from static JSON data), marks overdue ones in red, and auto-calculates days until each date. Dates update relative to today (using browser date) and can be tied to the cycle data so missing credits trigger the upcoming-finish reminder.
+
+6. **As a clinician, I can see reminders for missing supporting info.**
+   - _First pass:_ The system reminds me to submit missing docs.
+   - _QA-reviewed:_ Reminder banners on both Dashboard and Submission History identify CME entries lacking metadata. They list the entry titles and show actions ("Upload support metadata") and persist once metadata is added (i.e., reminder disappears). Reminder conditions are derived from localStorage checking for metadata objects linked to each CME ID.
+
+## Reviewer Stories
+
+7. **As a reviewer, I can view a submission detail page.**
+   - _First pass:_ Reviewers have a page with the details of each submission.
+   - _QA-reviewed:_ The reviewer detail screen displays the CME activity information, attached metadata (document type, pseudo-file name, upload date), clinician notes, and synthetic calculated credits. Action buttons to accept, request correction, or reject are present and disabled until the form loads. The detail view pulls from the same localStorage/data source used by clinicians, ensuring parity.
+
+8. **As a reviewer, I can mark an item accepted, needs correction, or rejected.**
+   - _First pass:_ Reviewers can flag statuses.
+   - _QA-reviewed:_ The reviewer screen includes three explicit buttons (Accept, Needs Correction, Reject) that update the submission status in localStorage and append a timestamped reviewer note. Status changes immediately reflect in the Submission History list and drive the release stakeholder metrics. Confirmation toast or feedback ensures reviewers know the new state.
+
+9. **As a reviewer, I can see a history trail of changes.**
+   - _First pass:_ There is some log of what happened to the submission.
+   - _QA-reviewed:_ Each submission detail includes a chronological trail showing clinician edits, reviewer decisions, and reminders. Each entry notes actor, action (e.g., "Clinician added metadata"), date/time (relative/ISO string), and resulting status or flag. Trail entries align with synthetic data increments and update whenever the status changes or metadata is added.
+
+## Release Stakeholder Stories
+
+10. **As a release stakeholder, I can view readiness metrics and open defects.**
+    - _First pass:_ There's a dashboard with metrics and defects.
+    - _QA-reviewed:_ A Readiness panel (part of the Dashboard) summarizes open defects (mocked by GitHub issue metadata), cycle completion percentage, and critical reminders. The metrics tie to reviewer states (e.g., number of items Accepted vs. pending) plus defect counts seeded from static JSON, and explicitly call out whether readiness is within the target completion band (e.g., 80% of credits logged, zero overdue critical dates). GitHub defects are referenced via placeholder issue numbers.
+
+The QA-reviewed criteria align with the five workflows and set up testable expectations for the static Vite/React/Tailwind proof-of-concept.
+</file>
+
+<file path="docs/story-review-before-after.md">
+# Phase 4 — Turn Weak Requirements into Testable Requirements
+
+This stage is where CycleReady earns its QA maturity badge. The artifacts in this repo should show how we transform fuzzy hopes into pass/fail rules that every reviewer and hiring manager can verify. The **before/after** contrast below borrows the Atlassian framing so the next reader immediately recognizes how acceptance criteria should evolve.
+
+## Story-review before/after acceptance criteria example
+| Category | Text |
+| --- | --- |
+| Weak | • User can log CME.  
+• System shows reminders.  
+• History should update. |
+| Improved | • When a user submits a CME entry with all required fields completed, the new entry appears at the top of History within the same session (no reload required).  
+• The submit action is blocked and an inline validation message appears beside the credits field whenever credits are missing.  
+• If supporting info is missing for an entry marked “documentation required,” the dashboard shows a reminder banner on the next load and links to the missing-document detail view. |
+
+Each improved criterion becomes an explicit testable condition; weak statements describe goals but leave the tester guessing about pass/fail boundaries. The reader should now be able to observe a behavior (entry placement, blocked submit, reminder banner) and either mark it **pass** or **fail**.
+
+## Review checklist for Phase 4 stories
+1. Capture the original “weak” phrasing as the story first appeared.  
+2. Rewrite it into a fixed condition that includes the trigger, the visible system response, and the timing or session expectation.  
+3. Link each improved criterion to a test case in `docs/test-cases-functional.md` (see referencing format in the traceability matrix).  
+4. If a deadline or reminder is involved, record when it should appear; reminders are only valid if we can observe them (e.g., “on next load” or “in the same session”).
+
+Solid acceptance criteria not only guide QA automation but also demonstrate that the team can consistently judge the “done” state from the user’s viewpoint. Use this document any time you validate a new story before it lands in the backlog.
+</file>
+
+<file path="docs/test-cases-functional.md">
+# Functional Test Cases — Phase 4
+This collection defines the functional test cases that prove the improved Phase 4 acceptance criteria in `docs/story-review-before-after.md` and the traceability matrix. Each test case maps directly back to a requirement ID from `docs/requirements-traceability-matrix.md` so the QA reviewer knows what to automate or execute manually.
+
+## TC-001 — CME entry appears at the top of History (Requirement RQ-001)
+- **Purpose:** Verify that a completed CME submission immediately surfaces at the top of the History list during the same session.  
+- **Precondition:** The clinician has at least one existing entry in History and the app loads synthetic/local data.  
+- **Steps:**  
+  1. Open the CME form.  
+  2. Enter all required fields (title, credits, completion date, category, provider).  
+  3. Submit the form.  
+- **Expected Result:** The form clears, and the newly created entry appears in History at position one without a full page reload; timestamps/order reflect submission time.
+
+## TC-002 — Credits validation blocks submission (Requirement RQ-002)
+- **Purpose:** Ensure the form rejects submissions that omit the credits field and surfaces inline guidance.  
+- **Precondition:** CME form is visible.  
+- **Steps:**  
+  1. Fill every required field except credits.  
+  2. Attempt to submit the form.  
+- **Expected Result:** Submission is blocked; the credits field shows an inline validation message (for example, “Credits required”), and the History list remains unchanged.
+
+## TC-003 — Reminder banner for missing documentation (Requirement RQ-003)
+- **Purpose:** Confirm that documentation-required submissions without supporting info trigger a reminder on the dashboard.  
+- **Precondition:** At least one CME entry is flagged as “documentation required” in the current session and lacks supporting info metadata.  
+- **Steps:**  
+  1. Load the dashboard.  
+  2. Observe the reminder banner.  
+  3. Click the reminder link to open the relevant entry or detail view (if implemented).  
+- **Expected Result:** On load, a reminder banner appears describing the missing documentation and links to the entry detail; the banner persists until metadata is attached.
+</file>
+
+<file path="docs/test-strategy.md">
+# CycleReady Phase 1 Test Strategy
+
+This strategy outlines how testing will cover the five believable workflows within the Vite + React + TypeScript + Tailwind static app, relying on synthetic JSON/localStorage data, Playwright automation, GitHub Actions, and manual UAT checkpoints before any interactive demo is published to GitHub Pages.
+
+## Test Pyramid Overview
+- **Unit-like checks (informal in Phase 1):** Document the expected shape of synthetic JSON payloads and localStorage keys so future components can render predictable data.
+- **Playwright smoke suite:** A small set of end-to-end flows that run against the static app (likely served by `npm run dev` or `npm run build` + `serve`). Smoke tests cover dashboard accuracy, logging CME, uploading support metadata, history navigation, and reminder visibility. Playwright writes HTML reports to `playwright-report/` and is triggered via GitHub Actions.
+- **Manual UAT/QA reviews:** Before release, testers manually step through acceptance criteria from `docs/acceptance-criteria-v1.md`, verify reminders, and confirm readiness metrics.
+
+## Workflow Test Focus
+1. **Dashboard (total credits, cycle progress, readiness metrics):**
+   - Automation: Validate total credits card matches seeded JSON/localStorage sum, progress percentage updates after log flow, readiness metric label toggles between "On Track" and "At Risk" based on reviewer statuses and defect count.
+   - Manual: Record numeric values and compare them to synthetic data table; note any UI discrepancy for review.
+
+2. **Log CME workflow:**
+   - Automation: Fill Log CME form fields, submit, and assert new entry appears under Submission History with status "Pending Review" and dashboard totals updated.
+   - Manual: Try submitting with missing required fields to confirm inline errors; verify category/provider dropdowns use synthetic data.
+
+3. **Upload Support metadata:**
+   - Automation: Simulate metadata entry (document type, pseudo-file name, date) and confirm associated Reminder banner disappears. Ensure metadata badge renders beside the CME entry.
+   - Manual: Verify metadata counts tie to the reminder logic and that metadata persists across reloads.
+
+4. **Submission History:**
+   - Automation: Check filter buttons (e.g., Show Rejected) and that statuses reflect reviewer actions; confirm chronological order as per history trail rules.
+   - Manual: Review the history trail for at least three entries to confirm actor, action, and timestamp formatting.
+
+5. **Key Dates/Reminders:**
+   - Automation: Compare countdown days to the current date, verify overdue cards highlight when date < today, and ensure reminder banners list missing metadata entries.
+   - Manual: Confirm at least three dates render with the expected format and that reminders recommend uploading metadata when needed.
+
+## Automation & CI
+- **Playwright smoke tests:** Run via `npx playwright test --config=tests/smoke/playwright.config.ts` (config to point at local dev server). Tests populate `playwright-report/` (check-in to repo or link from GitHub Actions artifacts).
+- **GitHub Actions pipeline:** Trigger Playwright suite on push/PR to `main`; include steps for linting docs if required later. Use built-in caching for npm modules and produce HTML report artifact.
+- **LocalStorage cleanup:** Each automation run clears/localStorage to prevent data bleed; test fixture seeds synthetic JSON data before each scenario.
+
+## Manual UAT Strategy
+1. **Acceptance criterion checklist:** QA reviewer runs through `docs/acceptance-criteria-v1.md`, marking pass/fail per story, noting actual vs. expected UI metrics.
+2. **Defect lifecycle verification:** File GitHub issues via the repo's issue form template (Phase 1 doc mentions this) for any blockers; track them on GitHub Projects.
+3. **Release readiness signoff:** Confirm release stakeholder metrics align with synthetic data (credits, reviewer statuses, defect count) and document in `docs/final-test-summary.md` in later phases.
+4. **Reminders & metadata:** Manually verify reminders block until metadata exists, then clear when metadata is added and persists across reload.
+
+## Data & Artifacts
+- Use synthetic clinician names, CME entries, document metadata, and fake GitHub issue numbers; record all synthetic seeds in comments within the test scripts.
+- Retain Playwright HTML report under `playwright-report/` and optionally link from `docs/test-strategy.md` once generated.
+- Log manual findings (e.g., reminder verification) in `docs/uat-results.md` when available.
+
+## Defect & Readiness Checks
+- Track defects via GitHub Issues (see `defects/` for reproducible steps once created); tie them to readiness metrics by referencing issue IDs in the readiness panel.
+- Automation ensures reviewer status changes (Accepted/Needs Correction/Rejected) update readiness counts; manual testers confirm that zero open critical defects result in "On Track" label.
+- If reminders or metadata fail, testers document the scenario, create issues, and note the defect in the readiness panel narrative.
+
+This strategy keeps Phase 1 tightly focused on documentation-critical QA artifacts while prepping automation and manual checking for the static CycleReady demo stack.
+</file>
+
+<file path="docs/triage-guidelines.md">
+# Phase 6 Defect Triage Guidelines
+
+A real defect lifecycle is the heart of Phase 6. Every bug is captured as a GitHub Issue, triaged against agreed-upon criteria, and surfaced on the repo's GitHub Project board so the team can see board/table views, charts, release readiness, and historical cadence. This document, the companion meeting notes template, and the `.github/ISSUE_TEMPLATE/defect.yml` form are the living artifacts that keep the workflow consistent.
+
+## Deliverables
+- **Live GitHub Project board:** Create a project called _CycleReady Defect Triage_ under this repo (use the new GitHub Projects experience so you can build board, table, and chart views). Link the board in each triage note entry so the log always points to the live view.
+- **Issue intake form:** Use `.github/ISSUE_TEMPLATE/defect.yml` to require the fields listed below; every defect in GitHub Issues must use this template so custom field metadata stays in sync with the board.
+- **Triage docs:** This guideline file plus `docs/triage-meeting-notes.md` describe how to surface blockers, share status, and keep decisions auditable.
+
+## Guiding goals
+- Defects document why they matter (summary, environment, expected vs actual, test case, screenshots) so triage can start immediately.
+- The project board records structured metadata (severity, priority, repro rate, owner, story ID, target fix version, release blocker, found-in stream) that feeds dashboards and release gating.
+- Regular triage meetings keep the board accurate; notes live in `docs/triage-meeting-notes.md` with links to the board snapshot and the highest-risk issues.
+
+## Issue intake + metadata sync
+- The defect form already requires summary, environment, reproduction steps, expected result, actual result, screenshots, severity, priority, repro rate, found in, and linked story/test case. Extend it when necessary but never soften the required fields—clarity is the triage fuel.
+- Add owner, story ID, and target fix version inline if known so the GitHub Project custom fields can be populated without guessing. Release blockers must be marked explicitly as _Yes_ or _No_.
+- After filing, add the issue to the Project (board or table view) so the metadata (single selects, text, numbers) can feed charts and saved views. Issues should stay unassigned only until triage confirms an owner.
+
+## GitHub Project board configuration
+The board mirrors the lifecycle. Configure these single-select/text/date custom fields under the project settings:
+
+| Field | Type | Options / Description |
+| --- | --- | --- |
+| Severity | Single-select | `Sev1 - Blocker`, `Sev2 - Critical`, `Sev3 - Major`, `Sev4 - Minor` (driven from the issue form). |
+| Priority | Single-select | `P1 - Fix now`, `P2 - Fix before next release`, `P3 - Fix in a future release`, `P4 - Informational`. |
+| Repro Rate | Single-select | `Always`, `Intermittent`, `Rare`. |
+| Owner | Text | Team or person accountable for resolving the defect. |
+| Story ID | Text | Backlog/story cross reference (e.g., `ST-1234`). |
+| Target Fix Version | Text | Release/QA milestone (e.g., `v1.2.0`). |
+| Release Blocker | Single-select | `Yes`, `No`—mark `Yes` when the defect must be resolved before shipping. |
+| Found In | Single-select | `Functional`, `Smoke`, `Regression`, `UAT`.
+
+Set up these additional views to make the board actionable:
+- **Board view:** Columns that follow the lifecycle: `New`, `Needs Triage`, `In Progress`, `Ready for QA`, `Release Review`, `Ready to Close`, `Closed`. Use automation rules (if available) to move issues when status changes.
+- **Table view:** Include metadata columns (Severity, Priority, Repro Rate, Target Fix Version, Release Blocker) so release owners can sort/filter by release-specific criteria.
+- **Charts:** Save at least three charts—severity distribution, release blockers by fix version, and aging defects (e.g., total days in `Needs Triage`). Pin these boards to the tab so stakeholders can see where the risk is each sprint.
+- **Saved views:** Examples:
+  - _Active triage_ (Severity >= Sev2, Release Blocker = Yes, column in `Needs Triage` or `In Progress`).
+  - _Release readiness_ (Target Fix Version = current release, Release Blocker filter, sorted by Priority).
+  - _Owner view_ (filter by a particular owner or squad to serve as a quick stand-up board).
+
+## Defect lifecycle steps
+1. **Report:** File the issue via the defect issue template. Attach repro steps, logs, screenshots, linked story/test case, and describe environment. Label the issue with `needs triage` and add it to the project board under the `New` column.
+2. **Triage:** QA/Product review issues at least every other workday (or every sprint planning session). Confirm or refine severity/priority/repro rate, set the `Owner` field, assign to a developer, decide whether the issue is a release blocker, and move the card to `Needs Triage` or `In Progress` depending on readiness.
+3. **Fix & verify:** Developers work through defects in `In Progress`, pushing PRs/branches that reference the issue. QA moves the card to `Ready for QA` once a build is available; set `Target Fix Version` before moving to `Release Review` so release managers can gate confidently.
+4. **Release readiness:** Release managers review the `Ready for QA` and `Release Review` columns; they consult the charts to see whether high-severity or blocking defects remain. The `Release Blocker` custom field drives whether the release can ship.
+5. **Closure:** After verification, QA closes the issue by moving it to `Ready to Close`/`Closed`, updating `Release Blocker` to `No` if resolved, and noting test coverage or regression suites executed.
+
+## Roles & responsibilities
+- **QA triage lead:** Owns the board, keeps metadata fresh, drives the replication of the required fields, and chairs the recurring triage review that feeds into `docs/triage-meeting-notes.md`.
+- **Developers:** Own the fix, keep the `Owner` field updated, and communicate readiness (via PRs) so QA can pull the card into `Ready for QA`.
+- **Product/Release:** Validates severity/priority definitions, tags release blockers, and uses saved views/charts to decide whether to delay or ship.
+- **Ops/UX:** Optional partners who weigh in when defects impact delivery or documented flows.
+
+## Triage meetings & metrics
+Run stand-up triage sessions at least weekly (daily during a stabilizing sprint). Use `docs/triage-meeting-notes.md` to record the discussion, decisions, and action items. Each entry should include:
+- Link to the live GitHub Project board view being referenced.
+- Snapshot of release blockers and Sev1/Sev2 issues.
+- Owner handoffs, follow-up actions, and expected due dates.
+
+This keeps the workflow auditable, lets Release Managers track the release unblockers, and ensures the GitHub Project chart panels stay aligned with what the team is actually fixing.
+</file>
+
+<file path="docs/triage-meeting-notes.md">
+# Triage Meeting Notes
+
+Use this file to capture the live context from every Phase 6 defect triage meeting. Each meeting entry should link to the live GitHub Project board, call out Sev1/Sev2 issues, and record decision/action items so defects never slip between triage and release.
+
+## How to use this template
+1. Start a new section for each scheduled triage (date-based heading, e.g., `## 2026-03-02 — Defect triage`).
+2. Drop in the board link (the board should already host the required custom fields, charts, and saved views described in `docs/triage-guidelines.md:1`).
+3. Capture the column counts, release blockers, and high-risk defects discussed.
+4. Close out with actions, owners, and due dates; reference the linked issue numbers so follow-up remains traceable.
+
+## Entry template
+### YYYY-MM-DD — Defect triage
+- **Facilitator:**
+- **Attendees:**
+- **GitHub Projects board view:** _(paste the live board or table URL)_
+- **Focus for this meeting:** _(e.g., release block list, UAT regression, smoke stability)_
+- **Key metrics:** _Sev1 open, Sev2 open, Release blocker yes count, Aging cards in Needs Triage_
+
+#### Board snapshot
+- **New / Needs Triage:**
+- **In Progress:**
+- **Ready for QA:**
+- **Release Review:**
+- **Ready to Close / Closed:**
+
+#### Release blockers & stories under pressure
+- `#123` (Sev1, Release Blocker = Yes, Owner @team)
+- `#456` (Sev2, Target Fix Version = v1.2.0, Found In = Regression)
+
+#### Decisions
+- Document any changes to severity/priority, release scope, or rerouting of owners.
+
+#### Action items
+| Action | Owner | Due | Status |
+| --- | --- | --- | --- |
+| Example: Reproduce issue with data set X | @qa | 2026-03-04 | In progress |
+
+#### Follow-up artifacts
+- Screenshots, Playwright tickets, release notes updates, etc.
+- Link to any supporting test cases or automation checks that were run.
+</file>
+
+<file path="docs/uat-plan.md">
+# CycleReady Phase 5 UAT Plan
+
+Phase 5 treats UAT as the final business-flow validation before a release candidate is signed off. The goal is to confirm the end-to-end CycleReady workflows meet the agreed requirements by exercising them with realistic personas, data, and success/failure conditions.
+
+## Objectives
+- Validate the clinician CME logging and reminder flows from submission through reviewer disposition.
+- Confirm that reviewer/staff actions (status changes, audit notes) influence downstream readiness, reminders, and history displays.
+- Demonstrate that blocking conditions (missing documentation, invalid dates, overdue milestones) are surfaced to the business owner via reminders, warnings, and status flags.
+- Capture observable results, defects, and approvals in dedicated artifacts so stakeholders can review and agree before release.
+
+## Scope
+1. **CME Submission & Support Metadata** – Happy-path logging, required document attachments, and reminder resolution.
+2. **Validation & Blocking Conditions** – Prevent invalid submissions and surface missing support reminders.
+3. **Reviewer Interventions** – Status changes, audit trail updates, rework guidance, and readiness calculations.
+4. **Key Date Tracking & Reminders** – Overdue date warnings appear and clear once corrected.
+5. **History & Audit** – Timeline updates after corrections and reviewer actions.
+
+## Personas
+| Persona | Role | Key Behavior |
+| --- | --- | --- |
+| Clinician — “Credithound” | Logs credits regularly, follows workflows, uses reminders to stay on track. | Submits multiple CME entries per month, ensures metadata is complete before status change. |
+| Clinician — “Busy Documenter” | Frequently forgets supporting documents and relies on reminders to fix submissions. | Submits CME but skips uploads, needs reminders and resubmits history tracked. |
+| Reviewer/Staff Auditor | Audits logged credits, changes status to reflect quality, and leaves audit notes for clinicians. | Moves submissions to “Needs Correction” or “Accepted” and ensures history reflects each change. |
+
+## Preconditions
+- Environment: Deploy the current build to the QA environment flagged for Phase 5 UAT (e.g., `uat.cycleready.local` or a stable Vite build served via `npm run preview`).
+- Seeded data: Reset localStorage/storage to the QA seed set, including clinicians, reviewer accounts, key dates, and reminders described in `docs/test-strategy.md`.
+- Access: Each tester has credentials matching assigned persona (with supporting data such as email/role).
+- Reminders: Ensure at least one submission is missing supporting documents to trigger the reminder flow.
+
+## Logistics
+- **Schedule:** Plan a single UAT week (e.g., March 9–13, 2026) with two-hour slots for each persona. Actual dates may adjust but always reference explicit dates (e.g., March 11, 2026).
+- **Tools:** Use the web interface deployed to `CycleReady QA` plus shared documents in `docs/uat-results.md` and `docs/uat-scripts.md`.
+- **Communication:** Bugs are reported via GitHub Issues with the `phase-5-uat` label; include the Test ID and persona in the title (e.g., “UAT-03 Busy Documenter – Missing Doc Reminder Stays”). Notify the UAT lead (qa-lead@cycleready.com) via Slack when issues block further testing.
+- **Defect Lifecycle:** Blockers are raised immediately, medium-impact issues are tracked with status “Needs Correction,” and observations are noted in `docs/uat-results.md`.
+
+## Test Deliverables
+1. **Test Plan (this document)** – Covers objectives, personas, entry/exit criteria, and communication standards.
+2. **Detailed Scripts** – Documented in `docs/uat-scripts.md` with steps, preconditions, and expected results.
+3. **Results Log** – Populated in `docs/uat-results.md` during execution with actual results and defects.
+4. **Signoff Sheet** – Final approvals recorded in `docs/uat-signoff-sheet.md`.
+
+## Entry & Exit Criteria
+- **Entry:** All Phase 5 requirements are implemented (e.g., CME logging, reminders, history updates, reviewer statuses). QA environment is stable, and personas have working accounts.
+- **Exit:** Every script in `docs/uat-scripts.md` has Actual Results recorded, defects are documented or resolved, and all required signatures appear in the signoff sheet. Critical defects must be resolved or deferred with stakeholder approval before exit.
+
+## Bug Communication Standards
+- **Title Format:** `[Test ID] [Persona] – concise issue]`
+- **Severity Definitions:** Critical (blocks business flow), Major (requires fix before release), Minor (cosmetic or low-impact).
+- **Attachments:** Include screenshots/videos of failures, log snippets, and steps to reproduce.
+- **Notification:** Ping qa-lead@cycleready.com and the responsible product owner on Slack after filing.
+- **Retests:** Document retest results in `docs/uat-results.md` and reference the GitHub issue number.
+</file>
+
+<file path="docs/uat-results.md">
+# CycleReady Phase 5 UAT Results Log
+
+Use this log to capture execution outcomes for each script, link defects, and summarize open issues. Populate the **Actual Result** column, reference GitHub issue IDs, and note if retests were performed.
+
+| Test ID | Persona | Scenario | Status | Actual Result & Observations | Issues / GitHub ID |
+| --- | --- | --- | --- | --- | --- |
+| UAT-01 | Credithound Clinician | Complete happy-path CME submission | | | |
+| UAT-02 | Credithound Clinician | Invalid submission blocked | | | |
+| UAT-03 | Busy Documenter Clinician | Reminder for missing support | | | |
+| UAT-04 | Busy Documenter Clinician | History updates after correction | | | |
+| UAT-05 | Reviewer/Staff Auditor | Reviewer sets Needs Correction | | | |
+| UAT-06 | Credithound Clinician | Overdue key date warning | | | |
+
+## Results Summary
+- **Pass Rate:** Summarize how many scripts passed vs. failed.
+- **Major Blockers:** List any issues preventing completion; refer to GitHub issue IDs and describe next steps.
+- **Observations:** Note UI quirks, timing issues, or unexpected behaviors that might not rise to defect level but deserve awareness.
+
+## Retest Notes
+- Document any retests in this section, referencing the original Test ID, tester, and outcome.
+
+## Outstanding Issues
+- Issue #: 
+  - **Description:** 
+  - **Impact:** 
+  - **Owner:** 
+  - **Next Step / ETA:**
+</file>
+
+<file path="docs/uat-scripts.md">
+# CycleReady Phase 5 UAT Scripts
+
+Each script below corresponds to a scenario derived from the Phase 5 requirements. Record actual results, defects, and the tester signoff immediately after executing each script.
+
+### Legend
+- **Expected Result:** Business outcome that must be met for the scenario to pass.
+- **Actual Result:** Filled in during execution (Pass/Fail and observations).
+- **Signoff:** Tester initials and date once the scenario is validated.
+
+---
+
+## UAT-01: Complete happy-path CME submission
+- **Persona:** Clinician — “Credithound”
+- **Preconditions:** Clinician is logged in, dashboard shows “On Track,” reminders cleared except for the targeted submission row.
+- **Steps:**
+  1. Open Log CME form, select approved activity type, enter date within current cycle, quantity of credits, and provider.
+  2. Upload required supporting document (PDF placeholder), add description, and submit.
+  3. Navigate to Submission History and confirm the new entry appears with status “Pending Review,” metadata badge, and reminder cleared.
+  4. Confirm dashboard totals update to include the new credits and “On Track” status remains.
+- **Expected Result:** Submission persists, reminders removed, dashboard totals updated, history shows timestamp, and readiness remains green.
+- **Actual Result:** 
+- **Signoff:** 
+
+## UAT-02: Invalid submission blocked
+- **Persona:** Clinician — “Credithound”
+- **Preconditions:** Clinician is on the Log CME screen without a supporting metadata upload.
+- **Steps:**
+  1. Try submitting CME entry with a future date beyond the current key date range and missing required document.
+  2. Observe inline validation and prevent submission.
+  3. Verify status remains “Draft,” reminder still indicates missing support.
+  4. Attempt to bypass validation via browser refresh and confirm the requirement persists.
+- **Expected Result:** Application blocks submission, displays validation messages for date and missing support, no history entry added.
+- **Actual Result:** 
+- **Signoff:** 
+
+## UAT-03: Reminder appears for missing support
+- **Persona:** Clinician — “Busy Documenter”
+- **Preconditions:** Clinician has previously logged CME without uploading supporting document; reminder should refresh after login.
+- **Steps:**
+  1. Log in as Busy Documenter.
+  2. Open dashboard and confirm the reminder banner notes missing supporting documentation for the target CME entry.
+  3. Click the reminder CTA to open the Upload Support flow, attach the missing document, and submit.
+  4. Confirm reminder clears from dashboard and history row now shows metadata badge.
+- **Expected Result:** Reminder displays on login, CTA drives clinician to document upload, and the reminder disappears once the document is attached.
+- **Actual Result:** 
+- **Signoff:** 
+
+## UAT-04: History updates after correction
+- **Persona:** Clinician — “Busy Documenter”
+- **Preconditions:** Clinician previously received a “Needs Correction” status on a submission; supporting document is now ready.
+- **Steps:**
+  1. Locate the flagged submission in History.
+  2. Attach the required metadata, resubmit, and confirm status changes back to “Pending Review.”
+  3. Refresh history and evidence that the timeline shows the “Needs Correction” action, clinician upload, and current submission status.
+  4. Verify the reviewer audit entry now appears with a new timestamp.
+- **Expected Result:** History reflects the correction workflow, showing both the prior reviewer action and the clinician’s fix with updated status.
+- **Actual Result:** 
+- **Signoff:** 
+
+## UAT-05: Reviewer changes status to Needs Correction
+- **Persona:** Reviewer/Staff Auditor
+- **Preconditions:** Reviewer is assigned to pending submissions; the target submission reached “Pending Review.”
+- **Steps:**
+  1. Log in as reviewer, open the pending submission, and add audit comments referencing missing metadata.
+  2. Change status to “Needs Correction” and save.
+  3. Confirm history log shows reviewer details and NEW status.
+  4. Alert the Busy Documenter persona (via in-app notification or manual email if supported).
+- **Expected Result:** Submission status flips to “Needs Correction,” history captures audit notes, clinician reminders (if any) reflect the reviewer action.
+- **Actual Result:** 
+- **Signoff:** 
+
+## UAT-06: Overdue key date warning appears
+- **Persona:** Clinician — “Credithound”
+- **Preconditions:** One key cycle date is simulated as past due (e.g., `Renewal Due Date` < today).
+- **Steps:**
+  1. Login and review dashboard cards tied to key dates.
+  2. Confirm overdue date card is highlighted (e.g., “Overdue” label, red icon) and message instructs clinician to catch up.
+  3. Attempt to submit new CME after the due date; ensure the warning persists until a reviewer or staff user updates the date.
+  4. Reviewer updates the date in settings; verify warning clears in the dashboard.
+- **Expected Result:** Overdue warning is visible, prevents misleading readiness signaling, and clears only after reviewer adjusts key date or new submission is accepted.
+- **Actual Result:** 
+- **Signoff:**
+</file>
+
+<file path="docs/uat-signoff-sheet.md">
+# CycleReady Phase 5 UAT Signoff Sheet
+
+Record approvals once all scripts are executed, documented, and blockers addressed. Include signatures for the Clinician and Reviewer personas, along with the QA lead approving the release.
+
+## Release Details
+- **Release Name / Candidate:** Phase 5 UAT Release Candidate
+- **Environment:** CycleReady QA (`uat.cycleready.local`) or equivalent preview build
+- **Date(s) of Testing:** e.g., March 9–13, 2026
+- **Tester Lead:** qa-lead@cycleready.com
+- **Business Owner:** product-owner@cycleready.com
+
+## Signoff Table
+| Persona / Role | Tester Name | Tests Covered | Status | Signature & Date |
+| --- | --- | --- | --- | --- |
+| Clinician — Credithound (regular submitter) |  | UAT-01, UAT-02, UAT-06 | ☐ Pass ☐ Fail ☐ Blocked |  |
+| Clinician — Busy Documenter (needs reminders) |  | UAT-03, UAT-04 | ☐ Pass ☐ Fail ☐ Blocked |  |
+| Reviewer / Staff Auditor |  | UAT-05 | ☐ Pass ☐ Fail ☐ Blocked |  |
+| QA Lead / Test Coordinator |  | All scripts reviewed | ☐ Approve ☐ Defer |  |
+
+## Signoff Criteria
+1. All UAT scripts are executed and documented in `docs/uat-results.md`.
+2. Any defects are logged in GitHub with the `phase-5-uat` label and referenced in the results log.
+3. Blocking issues are resolved or deferred with stakeholder agreement before the QA Lead signs off.
+4. Business Owner and Product Stakeholder review summary observations and agree to release.
+
+## Notes / Exceptions
+- Document any deviations (e.g., test environment instability, loaded data variances, additional manual steps) that impacted execution. Include mitigation plans or follow-up owners.
+</file>
+
+<file path="public/assets/portfolio/defect-board.svg">
+<svg width="320" height="200" viewBox="0 0 320 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="320" height="200" rx="20" fill="#0f172a" />
+  <rect x="24" y="24" width="272" height="28" rx="8" fill="#1e293b" />
+  <rect x="24" y="70" width="272" height="18" rx="6" fill="#134e4a" />
+  <rect x="24" y="98" width="272" height="18" rx="6" fill="#075985" />
+  <rect x="24" y="126" width="272" height="18" rx="6" fill="#ca8a04" />
+  <circle cx="48" cy="140" r="5" fill="#22c55e" />
+  <circle cx="90" cy="140" r="5" fill="#f97316" />
+  <circle cx="132" cy="140" r="5" fill="#ef4444" />
+  <text x="30" y="182" fill="#94a3b8" font-size="12" font-family="Inter">Defect board snapshot</text>
+</svg>
+</file>
+
+<file path="public/assets/portfolio/release-summary.svg">
+<svg width="320" height="200" viewBox="0 0 320 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="320" height="200" rx="20" fill="#0f172a" />
+  <rect x="32" y="34" width="256" height="32" rx="8" fill="#1e293b" />
+  <rect x="32" y="82" width="120" height="18" rx="6" fill="#0ea5e9" />
+  <rect x="32" y="108" width="200" height="18" rx="6" fill="#22c55e" />
+  <rect x="32" y="134" width="160" height="18" rx="6" fill="#f97316" />
+  <line x1="32" y1="170" x2="288" y2="170" stroke="#475569" stroke-width="2" stroke-linecap="round" />
+  <circle cx="96" cy="168" r="6" fill="#22c55e" />
+  <circle cx="200" cy="168" r="6" fill="#0ea5e9" />
+  <text x="32" y="190" fill="#94a3b8" font-size="12" font-family="Inter">Release summary snapshot</text>
+</svg>
+</file>
+
+<file path="public/assets/portfolio/uat-checklist.svg">
+<svg width="320" height="200" viewBox="0 0 320 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="320" height="200" rx="20" fill="#0f172a" />
+  <rect x="30" y="32" width="260" height="18" rx="6" fill="#1e293b" />
+  <rect x="30" y="64" width="260" height="18" rx="6" fill="#0f766e" />
+  <rect x="30" y="96" width="260" height="18" rx="6" fill="#0ea5e9" />
+  <rect x="30" y="128" width="260" height="18" rx="6" fill="#7c3aed" />
+  <rect x="30" y="160" width="260" height="18" rx="6" fill="#14b8a6" />
+  <text x="30" y="190" fill="#94a3b8" font-size="12" font-family="Inter">UAT checklist snapshot</text>
+</svg>
+</file>
+
+<file path="src/components/HistoryList.tsx">
+import StatusChip from './StatusChip';
+import type { Activity } from '../data/types';
+import { formatDate, formatDateTime } from '../utils/date';
+
+export default function HistoryList({ activities }: { activities: Activity[] }) {
+  if (activities.length === 0) {
+    return (
+      <section className="rounded-2xl border border-dashed border-white/20 bg-slate-900/60 p-6 text-sm text-slate-400">
+        <h2 className="text-base font-semibold text-white">Submission history</h2>
+        <p className="mt-2">History is empty. Start by logging your first CME activity to see it here.</p>
+      </section>
+    );
+  }
+
+  const sorted = [...activities].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+  return (
+    <section className="rounded-2xl border border-white/10 bg-slate-900/70 p-6 shadow-lg shadow-slate-950/50">
+      <div className="mb-5 flex items-center justify-between">
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-wider text-cyan-300">History</p>
+          <h2 className="text-2xl font-semibold text-white">Newest submissions first</h2>
+        </div>
+        <p className="text-xs text-slate-500">Status chips stay consistent with all other views (Accepted / Pending Review / Needs Correction / Rejected).</p>
+      </div>
+
+      <div className="space-y-4">
+        {sorted.map((activity) => (
+          <article
+            key={activity.id}
+            className="rounded-2xl border border-white/5 bg-slate-950/40 p-4 shadow-inner shadow-black/40"
+          >
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h3 className="text-lg font-semibold text-white">{activity.title}</h3>
+                <p className="text-sm text-slate-400">{activity.provider}</p>
+              </div>
+              <StatusChip status={activity.status} />
+            </div>
+            <div className="mt-3 grid gap-2 text-xs text-slate-400 sm:grid-cols-3">
+              <span>Category: {activity.category}</span>
+              <span>Credits: {activity.credits}</span>
+              <span>Completion: {formatDate(activity.completionDate)}</span>
+            </div>
+            <div className="mt-3 flex items-center justify-between text-xs text-slate-400">
+              <p>{activity.metadata ? 'Metadata attached, reviewer-ready' : 'Missing metadata – add support upload below.'}</p>
+              <p className="text-slate-500">Logged {formatDate(activity.createdAt)}</p>
+            </div>
+            <div className="mt-3 rounded-xl border border-white/5 bg-slate-950/40 p-3 text-xs text-slate-300">
+              <p className="font-semibold text-slate-100">Latest action</p>
+              <p className="mt-1 text-slate-400">{activity.timeline[activity.timeline.length - 1]?.detail || 'No detail recorded.'}</p>
+              <p className="text-[11px] uppercase tracking-[0.4em] text-slate-500">
+                {activity.timeline[activity.timeline.length - 1]?.actor ?? 'Clinician'} ·{' '}
+                {activity.timeline[activity.timeline.length - 1]?.timestamp
+                  ? formatDateTime(activity.timeline[activity.timeline.length - 1]?.timestamp)
+                  : 'Timestamp missing'}{' '}
+                ET
+              </p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+</file>
+
+<file path="src/components/KeyDatesPanel.tsx">
+import type { KeyDate } from '../data/types';
+import { daysUntil, dueStatus, formatDate } from '../utils/date';
+
+const statusLabel: Record<'on-track' | 'due-soon' | 'overdue', { text: string; badge: string }> = {
+  'on-track': { text: 'On track', badge: 'bg-cyan-500/20 text-cyan-200' },
+  'due-soon': { text: 'Due soon', badge: 'bg-amber-500/20 text-amber-200' },
+  overdue: { text: 'Overdue', badge: 'bg-rose-500/20 text-rose-200' }
+};
+
+export default function KeyDatesPanel({ keyDates }: { keyDates: KeyDate[] }) {
+  const sorted = [...keyDates].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+  return (
+    <section className="rounded-2xl border border-white/10 bg-slate-900/70 p-6 shadow-lg shadow-slate-950/50">
+      <div className="mb-5 flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-wider text-cyan-300">Key Dates</p>
+          <h2 className="text-2xl font-semibold text-white">NCCPA cycle checkpoints</h2>
+        </div>
+        <p className="text-sm text-slate-400">
+          NCCPA guidance ties each date to a mandated CME logging window; the system treats everything in Eastern Time (ET).
+        </p>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2">
+        {sorted.map((date) => {
+          const status = dueStatus(date.date, { dueSoon: 21, overdue: 0 });
+          const remaining = daysUntil(date.date);
+          const badge = statusLabel[status];
+          return (
+            <article key={date.id} className="flex flex-col gap-3 rounded-2xl border border-white/10 bg-slate-950/40 p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">{date.type === 'cycle' ? 'Cycle' : 'Milestone'}</p>
+                  <h3 className="text-xl font-semibold text-white">{date.label}</h3>
+                </div>
+                <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] ${badge.badge}`}>
+                  {badge.text}
+                </span>
+              </div>
+              <p className="text-sm text-slate-300">{date.description}</p>
+              <div className="flex items-center justify-between text-sm text-slate-400">
+                <span>{formatDate(date.date)}</span>
+                <span>{remaining >= 0 ? `${remaining} days left` : `${Math.abs(remaining)} days overdue`}</span>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+      <p className="mt-4 text-xs text-slate-500">
+        Dates flip to “Due soon” within 21 days of a deadline and become “Overdue” after midnight ET so QA can replay NCCPA window rules consistently.
+      </p>
+    </section>
+  );
+}
+</file>
+
+<file path="src/components/LogForm.tsx">
+import { useState, type FormEvent } from 'react';
+import type { Activity } from '../data/types';
+
+const categories = ['Clinical', 'Educational', 'Simulation', 'Leadership', 'Quality Improvement'];
+
+interface LogFormProps {
+  onSave: (entry: Activity) => void;
+  totalCredits: number;
+  requiredCredits: number;
+}
+
+const initialForm = {
+  title: '',
+  provider: '',
+  category: '',
+  credits: '',
+  completionDate: '',
+  notes: ''
+};
+
+export default function LogForm({ onSave, totalCredits, requiredCredits }: LogFormProps) {
+  const [form, setForm] = useState(initialForm);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [banner, setBanner] = useState<string | null>(null);
+
+  const handleChange = (field: keyof typeof initialForm, value: string) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => ({ ...prev, [field]: '' }));
+    setBanner(null);
+  };
+
+  const validate = () => {
+    const result: Record<string, string> = {};
+    if (!form.title.trim()) {
+      result.title = 'Title is required so QA knows which activity to test.';
+    }
+    if (!form.provider.trim()) {
+      result.provider = 'Provider name is required for compliance tracking.';
+    }
+    if (!form.category) {
+      result.category = 'Select a category to describe the CME type.';
+    }
+    if (!form.completionDate) {
+      result.completionDate = 'Provide a completion date so the cycle window can be validated.';
+    }
+    const creditsNumber = Number(form.credits);
+    if (!form.credits || Number.isNaN(creditsNumber) || creditsNumber <= 0) {
+      result.credits = 'Enter a number greater than zero for the credits earned.';
+    }
+    return result;
+  };
+
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    const validation = validate();
+    if (Object.keys(validation).length > 0) {
+      setErrors(validation);
+      setBanner('One or more required fields are invalid. Please resolve the listed errors.');
+      return;
+    }
+
+    const creditsNumber = Number(form.credits);
+    const id = `cme-${Date.now()}`;
+
+    const newEntry: Activity = {
+      id,
+      title: form.title.trim(),
+      provider: form.provider.trim(),
+      category: form.category,
+      credits: creditsNumber,
+      completionDate: form.completionDate,
+      status: 'Pending Review',
+      notes: form.notes.trim() || undefined,
+      createdAt: new Date().toISOString(),
+      timeline: [
+        {
+          id: `${id}-timeline-0`,
+          actor: 'Clinician',
+          action: 'Clinician submitted CME log',
+          detail: 'Metadata will be added via the upload simulator.',
+          timestamp: new Date().toISOString()
+        }
+      ]
+    };
+
+    onSave(newEntry);
+    setForm(initialForm);
+    setBanner('CME log saved locally and pushed into history for review.');
+  };
+
+  const completionPercentage = Math.min(100, Math.round((totalCredits / requiredCredits) * 100));
+
+  return (
+    <section className="rounded-2xl border border-white/10 bg-slate-900/70 p-6 shadow-lg shadow-slate-950/70">
+      <div className="flex flex-col gap-1">
+        <p className="text-sm font-semibold uppercase tracking-wider text-cyan-300">Log CME</p>
+        <h2 className="text-2xl font-semibold text-white">Capture the next activity</h2>
+        <p className="text-sm text-slate-400">
+          This form writes directly to localStorage so QA can replay the same steps. Metadata uploads live in a separate panel below.
+        </p>
+      </div>
+
+      {banner && (
+        <div className="mt-4 rounded-xl border border-rose-500/40 bg-rose-500/10 px-4 py-2 text-sm text-rose-100">
+          {banner}
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="mt-6 grid gap-6 sm:grid-cols-[2fr,1fr]">
+        <div className="space-y-4">
+          <div>
+            <label className="mb-2 block text-sm font-semibold text-slate-200" htmlFor="title">
+              Activity Title
+            </label>
+            <input
+              id="title"
+              value={form.title}
+              onChange={(event) => handleChange('title', event.target.value)}
+              className={`w-full rounded-xl border bg-slate-950/70 px-4 py-2 text-sm text-white shadow-sm shadow-black/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 ${
+                errors.title ? 'border-rose-500 ring-rose-200/40' : 'border-white/10'
+              }`}
+              placeholder="Example: Diabetes Remote Monitoring"
+            />
+            {errors.title && <p className="mt-1 text-xs text-rose-200">{errors.title}</p>}
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm font-semibold text-slate-200" htmlFor="provider">
+              Provider
+            </label>
+            <input
+              id="provider"
+              value={form.provider}
+              onChange={(event) => handleChange('provider', event.target.value)}
+              className={`w-full rounded-xl border bg-slate-950/70 px-4 py-2 text-sm text-white shadow-sm shadow-black/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 ${
+                errors.provider ? 'border-rose-500 ring-rose-200/40' : 'border-white/10'
+              }`}
+              placeholder="Organisation or conference"
+            />
+            {errors.provider && <p className="mt-1 text-xs text-rose-200">{errors.provider}</p>}
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm font-semibold text-slate-200" htmlFor="credits">
+              Credits
+            </label>
+            <input
+              id="credits"
+              type="number"
+              min={0.25}
+              step={0.25}
+              value={form.credits}
+              onChange={(event) => handleChange('credits', event.target.value)}
+              className={`w-full rounded-xl border bg-slate-950/70 px-4 py-2 text-sm text-white shadow-sm shadow-black/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 ${
+                errors.credits ? 'border-rose-500 ring-rose-200/40' : 'border-white/10'
+              }`}
+              placeholder="e.g., 2"
+            />
+            <p className="text-xs text-slate-500">Quarter-credit precision keeps NCCPA reporting accurate.</p>
+            {errors.credits && <p className="mt-1 text-xs text-rose-200">{errors.credits}</p>}
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm font-semibold text-slate-200" htmlFor="completionDate">
+              Completion date
+            </label>
+            <input
+              id="completionDate"
+              type="date"
+              value={form.completionDate}
+              onChange={(event) => handleChange('completionDate', event.target.value)}
+              className={`w-full rounded-xl border bg-slate-950/70 px-4 py-2 text-sm text-white shadow-sm shadow-black/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 ${
+                errors.completionDate ? 'border-rose-500 ring-rose-200/40' : 'border-white/10'
+              }`}
+            />
+            {errors.completionDate && <p className="mt-1 text-xs text-rose-200">{errors.completionDate}</p>}
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm font-semibold text-slate-200" htmlFor="category">
+              Category
+            </label>
+            <select
+              id="category"
+              value={form.category}
+              onChange={(event) => handleChange('category', event.target.value)}
+              className={`w-full rounded-xl border bg-slate-950/70 px-4 py-2 text-sm text-white shadow-sm shadow-black/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 ${
+                errors.category ? 'border-rose-500 ring-rose-200/40' : 'border-white/10'
+              }`}
+            >
+              <option value="">Select a category</option>
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+            {errors.category && <p className="mt-1 text-xs text-rose-200">{errors.category}</p>}
+          </div>
+        </div>
+
+        <div className="space-y-4 rounded-2xl border border-white/5 bg-slate-950/60 p-4">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-400">Cycle snapshot</p>
+            <p className="text-3xl font-semibold text-white">{totalCredits} credits</p>
+            <p className="text-xs uppercase tracking-[0.4em] text-slate-500">{completionPercentage}% complete</p>
+          </div>
+          <div className="space-y-2 text-xs text-slate-400">
+            <p>
+              {Math.max(0, requiredCredits - totalCredits)} credits to go to meet the required {requiredCredits}. QA can reference this number without reloading.
+            </p>
+            <p>Metadata upload is optional when saving, but required for acceptance—use the uploader below.</p>
+          </div>
+          <button
+            type="submit"
+            className="w-full rounded-2xl border border-cyan-500/60 bg-cyan-500/30 px-4 py-2 text-sm font-semibold uppercase tracking-[0.3em] text-cyan-100 transition hover:border-cyan-400/80 hover:bg-cyan-500/50"
+          >
+            Save &amp; queue for review
+          </button>
+        </div>
+      </form>
+    </section>
+  );
+}
+</file>
+
+<file path="src/components/ReleaseRoomPage.tsx">
+import ReleaseSummaryPanel from './ReleaseSummaryPanel';
+import {
+  releaseDefects,
+  releaseEvidenceLinks,
+  releasePacketPdfHref,
+  releaseSignoffMemo,
+  releaseSummaryPageHref,
+  severityBadge
+} from '../data/release-room';
+
+const basePath = import.meta.env.BASE_URL ?? '/';
+const liveAppHref = basePath;
+
+const testEvidenceCards = releaseEvidenceLinks.filter((link) =>
+  link.label === 'Playwright smoke report' || link.label === 'Phase 5 UAT results log'
+);
+
+export default function ReleaseRoomPage() {
+  const defectColumns = releaseDefects.map((defect) => {
+    const badge = severityBadge(defect.severity);
+    return (
+      <tr key={defect.id} className="border-t border-white/5">
+        <td className="py-3 text-sm text-slate-300">
+          <div className="flex items-center gap-2">
+            <span className={`rounded-full border px-2 py-0.5 text-[11px] font-semibold ${badge.color}`}>
+              {badge.label}
+            </span>
+            <span className="text-slate-400">{defect.severity}</span>
+          </div>
+        </td>
+        <td className="py-3 text-sm text-white">
+          <p className="font-semibold">{defect.title}</p>
+          <a href={defect.link} target="_blank" rel="noreferrer" className="text-xs text-cyan-300 underline">
+            GitHub issue {defect.id}
+          </a>
+        </td>
+        <td className="py-3 text-sm text-slate-300">{defect.owner}</td>
+        <td className="py-3 text-sm text-slate-300">{defect.status}</td>
+        <td className="py-3 text-sm text-slate-300">{defect.nextStep}</td>
+      </tr>
+    );
+  });
+
+  return (
+    <main className="min-h-screen bg-slate-950 py-10 text-slate-100">
+      <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4">
+        <header className="space-y-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.4em] text-cyan-300">Phase 8 · Release Room</p>
+          <div className="flex flex-col gap-3">
+            <h1 className="text-4xl font-semibold text-white">Release-ready microsite</h1>
+            <p className="max-w-3xl text-sm text-slate-400">
+              This page compiles the latest QA readiness metrics, evidence, defects, and signoff memo so stakeholders can quickly audit the
+              release state before shipping CycleReady.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <a
+                href={liveAppHref}
+                className="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:border-cyan-300"
+              >
+                Live App
+              </a>
+              <a
+                href={releaseSummaryPageHref}
+                className="rounded-full border border-amber-500/40 bg-amber-500/10 px-4 py-2 text-sm font-semibold text-amber-100 transition hover:border-amber-300"
+              >
+                Release summary page
+              </a>
+              <a
+                href={releasePacketPdfHref}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-full border border-cyan-500/40 bg-slate-900 px-4 py-2 text-sm font-semibold text-cyan-200 transition hover:border-cyan-300"
+              >
+                UAT packet PDF
+              </a>
+            </div>
+          </div>
+        </header>
+
+        <section>
+          <ReleaseSummaryPanel compact />
+        </section>
+
+        <section className="space-y-4 rounded-3xl border border-white/5 bg-slate-900/60 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs uppercase tracking-[0.4em] text-slate-400">Open defects board</p>
+              <h2 className="text-2xl font-semibold text-white">Tracked blockers</h2>
+            </div>
+            <p className="text-xs text-slate-500">Updated {releaseDefects.length} issues · {releaseTests.length} automation suites</p>
+          </div>
+          <div className="overflow-hidden rounded-2xl border border-white/5">
+            <table className="w-full table-fixed">
+              <thead className="bg-slate-950/60 text-left text-xs uppercase tracking-[0.4em] text-slate-500">
+                <tr>
+                  <th className="px-3 py-3">Severity</th>
+                  <th className="px-3 py-3">Defect</th>
+                  <th className="px-3 py-3">Owner</th>
+                  <th className="px-3 py-3">Status</th>
+                  <th className="px-3 py-3">Next step</th>
+                </tr>
+              </thead>
+              <tbody>{defectColumns}</tbody>
+            </table>
+          </div>
+        </section>
+
+        <section className="grid gap-6 lg:grid-cols-2">
+          <article className="rounded-3xl border border-white/5 bg-gradient-to-br from-slate-900/80 to-slate-950/80 p-6">
+            <div className="mb-4">
+              <p className="text-xs uppercase tracking-[0.4em] text-slate-400">Test evidence</p>
+              <h3 className="text-xl font-semibold text-white">Automation + UAT snapshots</h3>
+            </div>
+            <div className="grid gap-4">
+              {testEvidenceCards.map((link) => (
+                <article key={link.label} className="space-y-2 rounded-2xl border border-white/5 bg-slate-950/50 p-4">
+                  <p className="text-sm font-semibold text-white">{link.label}</p>
+                  <p className="text-xs text-slate-400">{link.description}</p>
+                  <a href={link.href} target="_blank" rel="noreferrer" className="text-xs font-semibold text-cyan-300 underline">
+                    Open evidence folder
+                  </a>
+                </article>
+              ))}
+              <article className="rounded-2xl border border-white/5 bg-slate-950/50 p-4 text-xs text-slate-300">
+                <p className="font-semibold text-white">Running the stack</p>
+                <p className="mt-1 text-sm text-slate-400">Run <code className="rounded bg-slate-800 px-2 py-0.5 text-xs">npm run test:e2e</code> and review <code className="rounded bg-slate-800 px-2 py-0.5 text-xs">playwright-report/index.html</code>.</p>
+              </article>
+            </div>
+          </article>
+          <article className="rounded-3xl border border-white/5 bg-slate-950/60 p-6">
+            <p className="text-xs uppercase tracking-[0.4em] text-slate-400">Final signoff memo</p>
+            <h3 className="text-xl font-semibold text-white">QA release recommendation</h3>
+            <div className="mt-4 grid gap-4 text-sm text-slate-300 md:grid-cols-2">
+              <div className="space-y-1 rounded-2xl border border-white/5 bg-slate-900/60 p-4">
+                <p className="text-xs uppercase tracking-[0.4em] text-slate-400">Scope tested</p>
+                <p>{releaseSignoffMemo.scopeTested}</p>
+              </div>
+              <div className="space-y-1 rounded-2xl border border-white/5 bg-slate-900/60 p-4">
+                <p className="text-xs uppercase tracking-[0.4em] text-slate-400">Not tested</p>
+                <p>{releaseSignoffMemo.notTested}</p>
+              </div>
+              <div className="space-y-1 rounded-2xl border border-white/5 bg-slate-900/60 p-4">
+                <p className="text-xs uppercase tracking-[0.4em] text-slate-400">Defect summary</p>
+                <p>{releaseSignoffMemo.defectSummary}</p>
+              </div>
+              <div className="space-y-1 rounded-2xl border border-white/5 bg-slate-900/60 p-4">
+                <p className="text-xs uppercase tracking-[0.4em] text-slate-400">Residual risks</p>
+                <p>{releaseSignoffMemo.residualRisks}</p>
+              </div>
+            </div>
+            <div className="mt-5 flex flex-wrap items-center gap-3">
+              <span className="rounded-full border border-cyan-500/80 bg-cyan-500/10 px-4 py-1 text-xs font-semibold text-cyan-200">
+                {releaseSignoffMemo.recommendation}
+              </span>
+              <p className="text-xs text-slate-400">Signed off {releaseSignoffMemo.signoffDate}</p>
+            </div>
+          </article>
+        </section>
+      </div>
+    </main>
+  );
+}
+</file>
+
+<file path="src/components/ReleaseSummaryPanel.tsx">
+import {
+  getCoveragePercent,
+  getSeverityCounts,
+  groupDefectsByOwner,
+  releaseDefects,
+  releaseEvidenceLinks,
+  releaseSignoffMemo,
+  releaseStoryCoverage,
+  releaseTests,
+  severityBadge
+} from '../data/release-room';
+
+const testSummary = releaseTests.reduce(
+  (acc, test) => {
+    acc.passed += test.passed;
+    acc.failed += test.failed;
+    return acc;
+  },
+  { passed: 0, failed: 0 }
+);
+
+const COVERAGE_PERCENT = getCoveragePercent(releaseStoryCoverage);
+const SEVERITY_COUNTS = getSeverityCounts(releaseDefects);
+const DEFECTS_BY_OWNER = groupDefectsByOwner(releaseDefects);
+
+export default function ReleaseSummaryPanel({ compact }: { compact?: boolean }) {
+  return (
+    <section className="rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900/80 to-slate-950/80 p-6 shadow-2xl shadow-slate-950/40">
+      {!compact && (
+        <header className="mb-6 space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-[0.4em] text-cyan-300">Phase 8 Release Room</p>
+          <h2 className="text-2xl font-semibold text-white">Release summary</h2>
+          <p className="text-sm text-slate-300">Story coverage, test evidence, and open defects that influence the go/no-go recommendation.</p>
+        </header>
+      )}
+
+      <div className="grid gap-4 md:grid-cols-3">
+        <article className="space-y-2 rounded-2xl border border-white/5 bg-white/5 p-4">
+          <p className="text-xs uppercase tracking-[0.4em] text-slate-400">Story coverage</p>
+          <p className="text-4xl font-semibold text-white">{COVERAGE_PERCENT}%</p>
+          <p className="text-xs text-slate-400">
+            {releaseStoryCoverage.qaReviewedStories} of {releaseStoryCoverage.totalStories} QA-reviewed stories
+          </p>
+        </article>
+        <article className="space-y-2 rounded-2xl border border-white/5 bg-white/5 p-4">
+          <p className="text-xs uppercase tracking-[0.4em] text-slate-400">Tests (pass/fail)</p>
+          <p className="text-4xl font-semibold text-white">
+            {testSummary.passed}/{testSummary.passed + testSummary.failed}
+          </p>
+          <p className="text-xs text-slate-400">{testSummary.failed} tests failed</p>
+        </article>
+        <article className="space-y-2 rounded-2xl border border-white/5 bg-white/5 p-4">
+          <p className="text-xs uppercase tracking-[0.4em] text-slate-400">Open defects</p>
+          <p className="text-4xl font-semibold text-white">{releaseDefects.length}</p>
+          <div className="grid grid-cols-3 gap-2 text-xs text-slate-300">
+            <span className="text-emerald-200">Sev1 {SEVERITY_COUNTS.sev1}</span>
+            <span className="text-amber-200">Sev2 {SEVERITY_COUNTS.sev2}</span>
+            <span className="text-sky-200">Sev3 {SEVERITY_COUNTS.sev3}</span>
+          </div>
+        </article>
+      </div>
+
+      <div className="mt-6 grid gap-4 md:grid-cols-2">
+        <div className="space-y-2 rounded-2xl border border-white/5 bg-slate-950/60 p-4">
+          <p className="text-xs uppercase tracking-[0.4em] text-slate-400">Blockers by owner</p>
+          <div className="space-y-3">
+            {Object.entries(DEFECTS_BY_OWNER).map(([owner, defects]) => (
+              <div key={owner} className="space-y-1">
+                <p className="text-sm font-semibold text-white">{owner}</p>
+                <div className="space-y-1 text-xs text-slate-300">
+                  {defects.map((defect) => {
+                    const badge = severityBadge(defect.severity);
+                    return (
+                      <p key={defect.id}>
+                        <span className={`mr-2 inline-flex rounded-full border px-2 py-0.5 text-[11px] font-semibold ${badge.color}`}>
+                          {badge.label}
+                        </span>
+                        <span>{defect.title}</span>
+                        <span className="text-slate-500"> · {defect.status}</span>
+                      </p>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="space-y-2 rounded-2xl border border-white/5 bg-slate-950/60 p-4">
+          <p className="text-xs uppercase tracking-[0.4em] text-slate-400">Recommendation</p>
+          <div className="flex items-center gap-2">
+            <span className="rounded-full border border-cyan-500/80 bg-cyan-500/10 px-3 py-1 text-sm font-semibold text-cyan-200">{releaseSignoffMemo.recommendation}</span>
+            <p className="text-xs text-slate-300">{releaseSignoffMemo.rationale ?? 'Ship once remaining blockers have assigned owners and triage notes.'}</p>
+          </div>
+        </div>
+      </div>
+
+      {!compact && (
+        <div className="mt-6 space-y-3">
+          <p className="text-xs uppercase tracking-[0.4em] text-slate-400">Evidence links</p>
+          <div className="grid gap-3 md:grid-cols-2">
+            {releaseEvidenceLinks.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center justify-between rounded-2xl border border-white/5 bg-slate-900/60 p-4 text-left text-sm text-slate-300 transition hover:border-cyan-500/50"
+              >
+                <div>
+                  <p className="text-white">{link.label}</p>
+                  <p className="text-xs text-slate-400">{link.description}</p>
+                </div>
+                <span className="text-xs font-semibold text-slate-400">↗</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+</file>
+
+<file path="src/components/RemindersPanel.tsx">
+import type { ReviewStatus } from '../data/types';
+
+export type ReminderItem = {
+  id: string;
+  title: string;
+  provider: string;
+  status: ReviewStatus;
+  reason: string;
+  actionLabel: string;
+  actionHint: string;
+};
+
+export default function RemindersPanel({
+  reminders,
+  onAction
+}: {
+  reminders: ReminderItem[];
+  onAction?: (id: string) => void;
+}) {
+  return (
+    <section className="rounded-2xl border border-white/10 bg-slate-900/70 p-6 shadow-lg shadow-slate-950/70">
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-lg font-semibold text-slate-100">Reminders</h2>
+        <p className="text-sm text-slate-400">Deadlines follow NCCPA Eastern Time (ET) so due dates stay consistent with certification rules.</p>
+      </div>
+
+      {reminders.length === 0 ? (
+        <div className="space-y-2 rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-4 text-sm text-emerald-200">
+          <p>No outstanding reminders. You cleared the metadata and reviewer notes required at this time.</p>
+          <p>We'll repopulate this list if a new log goes pending or we detect missing support files.</p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {reminders.map((reminder) => (
+            <article
+              key={reminder.id}
+              className="rounded-2xl border border-white/10 bg-slate-950/40 p-4"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-semibold uppercase tracking-wide text-amber-300">{reminder.status}</p>
+                  <h3 className="text-base font-semibold text-white">{reminder.title}</h3>
+                  <p className="text-xs text-slate-400">{reminder.provider}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => onAction?.(reminder.id)}
+                  className="rounded-full border border-cyan-500/40 bg-slate-900 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-cyan-200 transition hover:border-cyan-300/80 hover:text-cyan-100"
+                >
+                  {reminder.actionLabel}
+                </button>
+              </div>
+              <p className="mt-3 text-sm text-slate-400">{reminder.reason}</p>
+              <p className="mt-1 text-xs text-slate-500">{reminder.actionHint}</p>
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+</file>
+
+<file path="src/components/ReviewerPanel.tsx">
+import { useEffect, useState, type FormEvent } from 'react';
+import type { Activity, ReviewStatus } from '../data/types';
+import StatusChip from './StatusChip';
+import { formatDateTime } from '../utils/date';
+
+const reviewerOptions: ReviewStatus[] = ['Accepted', 'Pending Review', 'Needs Correction', 'Rejected'];
+
+interface ReviewerPanelProps {
+  activity?: Activity;
+  onUpdateStatus: (activityId: string, status: ReviewStatus, note?: string) => void;
+}
+
+export default function ReviewerPanel({ activity, onUpdateStatus }: ReviewerPanelProps) {
+  const [selectedStatus, setSelectedStatus] = useState<ReviewStatus>('Pending Review');
+  const [note, setNote] = useState('');
+  const [banner, setBanner] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (activity) {
+      setSelectedStatus(activity.status);
+    }
+  }, [activity]);
+
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    if (!activity) return;
+    onUpdateStatus(activity.id, selectedStatus, note.trim() || undefined);
+    setBanner('Reviewer update saved locally. Timeline appended for clinician review.');
+  };
+
+  if (!activity) {
+    return (
+      <section className="rounded-2xl border border-dashed border-white/10 bg-slate-900/60 p-6 text-sm text-slate-400">
+        Select a submission to review.
+      </section>
+    );
+  }
+
+  return (
+    <section className="rounded-2xl border border-white/10 bg-slate-900/70 p-6 shadow-lg shadow-slate-950/60">
+      <div className="flex flex-col gap-1">
+        <p className="text-sm font-semibold uppercase tracking-wider text-cyan-300">Reviewer</p>
+        <h2 className="text-2xl font-semibold text-white">Status &amp; notes</h2>
+        <p className="text-sm text-slate-400">
+          Timeline entries label actions as Clinician or Reviewer so everyone knows who made the change.
+        </p>
+      </div>
+
+      {banner && (
+        <div className="mt-4 rounded-xl border border-cyan-500/30 bg-cyan-500/10 px-4 py-2 text-sm text-cyan-50">
+          {banner}
+        </div>
+      )}
+
+      <div className="mt-4 grid gap-6 md:grid-cols-2">
+        <div className="space-y-2">
+          <p className="text-xs uppercase tracking-[0.4em] text-slate-500">Current entry</p>
+          <h3 className="text-lg font-semibold text-white">{activity.title}</h3>
+          <p className="text-xs text-slate-400">{activity.provider}</p>
+          <p className="text-sm text-slate-300">{activity.notes ?? 'No clinician note provided.'}</p>
+          <p className="text-xs text-slate-500">Completion date: {formatDateTime(activity.completionDate)}</p>
+          <div className="mt-2">
+            <StatusChip status={activity.status} />
+          </div>
+        </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <label className="block text-xs font-semibold uppercase tracking-[0.4em] text-slate-500">
+            Reviewer action
+          </label>
+          <div className="space-y-2">
+            {reviewerOptions.map((option) => (
+              <label key={option} className="flex items-center gap-2 text-sm text-slate-300">
+                <input
+                  type="radio"
+                  name="status"
+                  value={option}
+                  checked={selectedStatus === option}
+                  onChange={() => setSelectedStatus(option)}
+                  className="accent-cyan-500"
+                />
+                {option}
+              </label>
+            ))}
+          </div>
+          <div>
+            <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.4em] text-slate-500" htmlFor="review-note">
+              Comment
+            </label>
+            <textarea
+              id="review-note"
+              rows={3}
+              value={note}
+              onChange={(event) => setNote(event.target.value)}
+              className="w-full rounded-xl border border-white/10 bg-slate-950/70 px-3 py-2 text-sm text-white shadow-sm shadow-black/40 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+              placeholder="Add a reviewer note for the clinician (optional)."
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full rounded-2xl border border-amber-500/50 bg-amber-500/30 px-4 py-2 text-sm font-semibold uppercase tracking-[0.3em] text-amber-100 transition hover:border-amber-400/80 hover:bg-amber-500/40"
+          >
+            Save reviewer update
+          </button>
+        </form>
+      </div>
+
+      <div className="mt-6 space-y-3">
+        <h3 className="text-sm font-semibold uppercase tracking-[0.4em] text-slate-500">Timeline</h3>
+        <div className="space-y-2">
+          {activity.timeline.map((entry) => (
+            <div key={entry.id} className="flex items-start justify-between rounded-xl border border-white/5 bg-slate-950/40 p-3 text-sm text-slate-300">
+              <div>
+                <p className="font-semibold text-slate-100">{entry.actor}</p>
+                <p className="text-[13px] text-slate-400">{entry.action}</p>
+                {entry.detail && <p className="text-[12px] text-slate-500">{entry.detail}</p>}
+              </div>
+              <p className="text-[11px] uppercase tracking-[0.4em] text-slate-500">{formatDateTime(entry.timestamp)}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+</file>
+
+<file path="src/components/StatusChip.tsx">
+import type { ReviewStatus } from '../data/types';
+
+const colorMap: Record<ReviewStatus, string> = {
+  Accepted: 'bg-emerald-400/20 text-emerald-300 border-emerald-600',
+  'Pending Review': 'bg-amber-400/20 text-amber-300 border-amber-500',
+  'Needs Correction': 'bg-sky-400/20 text-sky-300 border-sky-500',
+  Rejected: 'bg-rose-400/20 text-rose-300 border-rose-500'
+};
+
+export default function StatusChip({ status }: { status: ReviewStatus }) {
+  return (
+    <span
+      className={`inline-flex items-center gap-1 rounded-full border px-3 py-0.5 text-xs font-semibold uppercase tracking-wide ${
+        colorMap[status]
+      }`}
+    >
+      {status}
+    </span>
+  );
+}
+</file>
+
+<file path="src/components/UploadSimulator.tsx">
+import { useRef, useState, type ChangeEvent } from 'react';
+import type { Activity, FileMetadata } from '../data/types';
+import { formatDateTime } from '../utils/date';
+import { formatFileSize } from '../utils/format';
+
+interface UploadSimulatorProps {
+  selectedActivity?: Activity;
+  onSaveMetadata: (activityId: string, metadata: FileMetadata) => void;
+}
+
+export default function UploadSimulator({ selectedActivity, onSaveMetadata }: UploadSimulatorProps) {
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [uploaded, setUploaded] = useState<FileMetadata | null>(null);
+  const [notice, setNotice] = useState<string>('Adding metadata keeps QA reminders green; files are not actually uploaded.');
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!selectedActivity || !file) {
+      setNotice('Select an activity before attaching metadata.');
+      return;
+    }
+    const metadata: FileMetadata = {
+      fileName: file.name,
+      fileType: file.type || 'application/octet-stream',
+      sizeInBytes: file.size,
+      uploadedAt: new Date().toISOString(),
+      notes: 'Recorded via simulated upload control.'
+    };
+    setUploaded(metadata);
+    setNotice('Metadata stored in localStorage for QA verification.');
+    onSaveMetadata(selectedActivity.id, metadata);
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
+  };
+
+  return (
+    <section className="rounded-2xl border border-white/10 bg-slate-900/70 p-6 shadow-lg shadow-slate-950/60">
+      <div className="flex flex-col gap-1">
+        <p className="text-sm font-semibold uppercase tracking-wider text-cyan-300">Upload simulation</p>
+        <h2 className="text-2xl font-semibold text-white">Attach documentation metadata</h2>
+        <p className="text-sm text-slate-400">
+          The uploader only records metadata (name/type/size/date) so QA can see the reminder rule fire. Files stay local.
+        </p>
+      </div>
+      <div className="mt-5 flex flex-col gap-4">
+        <button
+          type="button"
+          onClick={() => inputRef.current?.click()}
+          className="inline-flex w-full items-center justify-center rounded-2xl border border-cyan-500/60 bg-cyan-500/30 px-4 py-2 text-sm font-semibold uppercase tracking-[0.3em] text-cyan-100 transition hover:border-cyan-400/80 hover:bg-cyan-500/50"
+        >
+          Select a file for {selectedActivity ? selectedActivity.title : 'an activity'}
+        </button>
+        <input
+          type="file"
+          ref={inputRef}
+          onChange={handleFileChange}
+          className="hidden"
+        />
+        <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4 text-sm text-slate-300">
+          <p className="text-xs uppercase tracking-[0.4em] text-slate-500">Last metadata</p>
+          {uploaded ? (
+            <div className="mt-3 space-y-1">
+              <p className="text-base font-semibold text-white">{uploaded.fileName}</p>
+              <p className="text-xs text-slate-400">{uploaded.fileType} · {formatFileSize(uploaded.sizeInBytes)}</p>
+              <p className="text-xs text-slate-500">{formatDateTime(uploaded.uploadedAt)} ET</p>
+            </div>
+          ) : selectedActivity?.metadata ? (
+            <div className="mt-3 space-y-1">
+              <p className="text-base font-semibold text-white">{selectedActivity.metadata.fileName}</p>
+              <p className="text-xs text-slate-400">{selectedActivity.metadata.fileType} · {formatFileSize(selectedActivity.metadata.sizeInBytes)}</p>
+              <p className="text-xs text-slate-500">{formatDateTime(selectedActivity.metadata.uploadedAt)} ET</p>
+            </div>
+          ) : (
+            <p className="mt-3 text-xs text-slate-500">No metadata stored yet. A click here creates a QA playback artifact.</p>
+          )}
+        </div>
+        <p className="text-xs text-slate-400">{notice}</p>
+      </div>
+    </section>
+  );
+}
+</file>
+
+<file path="src/data/release-room.ts">
+export type ReleaseStoryCoverage = {
+  totalStories: number;
+  qaReviewedStories: number;
+};
+
+export type ReleaseTestResult = {
+  name: string;
+  passed: number;
+  failed: number;
+};
+
+export type ReleaseEvidenceLink = {
+  label: string;
+  description: string;
+  href: string;
+};
+
+export type ReleaseDefect = {
+  id: string;
+  title: string;
+  severity: 'Sev1 - Blocker' | 'Sev2 - Critical' | 'Sev3 - Major';
+  owner: string;
+  status: string;
+  nextStep: string;
+  link: string;
+};
+
+export type ReleaseSignoffMemo = {
+  scopeTested: string;
+  notTested: string;
+  defectSummary: string;
+  residualRisks: string;
+  rationale: string;
+  recommendation: 'Ship' | 'Do Not Ship';
+  signoffDate: string;
+};
+
+const basePath = import.meta.env.BASE_URL ?? '/';
+const normalizedBase = basePath.endsWith('/') ? basePath : `${basePath}/`;
+
+export const releaseStoryCoverage: ReleaseStoryCoverage = {
+  totalStories: 10,
+  qaReviewedStories: 9
+};
+
+export const releaseTests: ReleaseTestResult[] = [
+  {
+    name: 'Playwright smoke suite',
+    passed: 4,
+    failed: 0
+  }
+];
+
+export const releaseDefects: ReleaseDefect[] = [
+  {
+    id: 'CR-401',
+    title: 'Overdue reminder never clears after metadata upload',
+    severity: 'Sev1 - Blocker',
+    owner: 'Release QA Lead',
+    status: 'Investigating fix',
+    nextStep: 'Revisit reminder flag logic after metadata contract is updated',
+    link: 'https://github.com/josuejero/CycleReady/issues/401'
+  },
+  {
+    id: 'CR-312',
+    title: 'Reviewer notes not saving when reviewer updated status',
+    severity: 'Sev2 - Critical',
+    owner: 'Reviewer Services',
+    status: 'Under fix',
+    nextStep: 'Patch reviewer panel save payload and rerun UI smoke tests',
+    link: 'https://github.com/josuejero/CycleReady/issues/312'
+  },
+  {
+    id: 'CR-287',
+    title: 'Defect board missing owner tag on reopened cards',
+    severity: 'Sev2 - Critical',
+    owner: 'Release QA Lead',
+    status: 'Needs triage',
+    nextStep: 'Assign owner metadata before refreshing board view',
+    link: 'https://github.com/josuejero/CycleReady/issues/287'
+  }
+];
+
+export const releaseEvidenceLinks: ReleaseEvidenceLink[] = [
+  {
+    label: 'Phase 5 UAT plan',
+    description: 'Describes scope, personas, scripts, and entry/exit criteria for Phase 5.',
+    href: 'docs/uat-plan.md'
+  },
+  {
+    label: 'Phase 5 UAT results log',
+    description: 'Documents actual outcomes, defect references, and retest notes.',
+    href: 'docs/uat-results.md'
+  },
+  {
+    label: 'Playwright smoke report',
+    description: 'Pass/fail proof from automated suite (see playwright-report/index.html).',
+    href: 'playwright-report/index.html'
+  },
+  {
+    label: 'Triage guidelines',
+    description: 'Explains how to keep defect metadata and release blockers current.',
+    href: 'docs/triage-guidelines.md'
+  }
+];
+
+export const releasePacketPdfHref = `${normalizedBase}assets/cycleready-uat-packet.pdf`;
+
+export const releaseSummaryPageHref = `${normalizedBase}release-summary.html`;
+export const releaseRoomPageHref = `${normalizedBase}release-room.html`;
+
+export const releaseSignoffMemo: ReleaseSignoffMemo = {
+  scopeTested:
+    'Dashboard readiness metrics, CME logging, reader history, reminders, reviewer transitions, seeded metadata uploads, and Phase 5 UAT scripts.',
+  notTested:
+    'Live integrations (GitHub issue APIs), actual clinician accounts, and production databases were not available in this static proof-of-concept.',
+  defectSummary:
+    'Critical reminders or reviewer-save regressions remain (see GitHub issues 401 & 312) but do not block the core remediation workflow.',
+  residualRisks:
+    'Reminder logic and reviewer metadata saving are still in flux; these risks are documented in the defect board and tracked via triage meetings.',
+  rationale:
+    'Coverage stands at 90% with zero automation regressions, so ship once Sev1 entry 401 is confirmed with triage markers.',
+  recommendation: 'Ship',
+  signoffDate: 'March 3, 2026'
+};
+
+export function getCoveragePercent(coverage: ReleaseStoryCoverage) {
+  if (coverage.totalStories === 0) return 0;
+  return Math.round((coverage.qaReviewedStories / coverage.totalStories) * 100);
+}
+
+export function getSeverityCounts(defects: ReleaseDefect[]) {
+  return defects.reduce(
+    (counts, defect) => {
+      if (defect.severity.startsWith('Sev1')) counts.sev1 += 1;
+      if (defect.severity.startsWith('Sev2')) counts.sev2 += 1;
+      if (defect.severity.startsWith('Sev3')) counts.sev3 += 1;
+      return counts;
+    },
+    { sev1: 0, sev2: 0, sev3: 0 }
+  );
+}
+
+export function groupDefectsByOwner(defects: ReleaseDefect[]) {
+  return defects.reduce<Record<string, ReleaseDefect[]>>((grouped, defect) => {
+    if (!grouped[defect.owner]) {
+      grouped[defect.owner] = [];
+    }
+    grouped[defect.owner].push(defect);
+    return grouped;
+  }, {});
+}
+
+export function severityBadge(severity: ReleaseDefect['severity']) {
+  if (severity.startsWith('Sev1')) {
+    return { label: 'Sev1', color: 'bg-rose-500/10 text-rose-200 border-rose-500/40' };
+  }
+  if (severity.startsWith('Sev2')) {
+    return { label: 'Sev2', color: 'bg-amber-500/10 text-amber-200 border-amber-500/40' };
+  }
+  return { label: 'Sev3', color: 'bg-cyan-500/10 text-cyan-200 border-cyan-500/40' };
+}
+</file>
+
+<file path="src/data/seed.json">
+{
+  "activities": [
+    {
+      "id": "cme-1",
+      "title": "Advanced Cardiology Case Review",
+      "provider": "Cardio Education Network",
+      "category": "Clinical",
+      "credits": 8,
+      "completionDate": "2025-09-10",
+      "status": "Accepted",
+      "notes": "Reviewed with cardiology quality team.",
+      "createdAt": "2025-09-11T09:00:00Z",
+      "timeline": [
+        {
+          "actor": "Clinician",
+          "action": "Submitted CME log",
+          "detail": "Includes cardiology patient follow-up notes.",
+          "timestamp": "2025-09-11T09:05:00Z"
+        },
+        {
+          "actor": "Reviewer",
+          "action": "Accepted",
+          "detail": "Credits approved after documentation review.",
+          "timestamp": "2025-09-12T15:22:00Z"
+        }
+      ],
+      "metadata": {
+        "fileName": "cardio-case-review.pdf",
+        "fileType": "application/pdf",
+        "sizeInBytes": 223488,
+        "uploadedAt": "2025-09-11T09:15:00Z",
+        "notes": "Full provider certificate included."
+      }
+    },
+    {
+      "id": "cme-2",
+      "title": "Telehealth Guidelines Update",
+      "provider": "Virtual Care Institute",
+      "category": "Educational",
+      "credits": 4,
+      "completionDate": "2025-10-01",
+      "status": "Pending Review",
+      "notes": "Pending reviewer feedback on new guidelines.",
+      "createdAt": "2025-10-02T13:34:00Z",
+      "timeline": [
+        {
+          "actor": "Clinician",
+          "action": "Submitted CME log",
+          "detail": "Includes telehealth policy reflections.",
+          "timestamp": "2025-10-02T13:40:00Z"
+        }
+      ]
+    },
+    {
+      "id": "cme-3",
+      "title": "Trauma Simulation Lab",
+      "provider": "State Trauma Council",
+      "category": "Simulation",
+      "credits": 6,
+      "completionDate": "2025-10-20",
+      "status": "Needs Correction",
+      "notes": "Reviewer asked for signed roster.",
+      "createdAt": "2025-10-22T11:22:00Z",
+      "timeline": [
+        {
+          "actor": "Clinician",
+          "action": "Submitted CME log",
+          "detail": "Includes simulation lab notes.",
+          "timestamp": "2025-10-22T11:25:00Z"
+        },
+        {
+          "actor": "Reviewer",
+          "action": "Needs Correction",
+          "detail": "Missing roster signature noted.",
+          "timestamp": "2025-10-23T08:05:00Z"
+        }
+      ]
+    }
+  ],
+  "keyDates": [
+    {
+      "id": "cycle-start",
+      "label": "Cycle Start",
+      "date": "2025-07-01",
+      "description": "NCCPA window opened for the 2025-2026 certification cycle.",
+      "type": "cycle"
+    },
+    {
+      "id": "midpoint-check",
+      "label": "Midpoint Check-In",
+      "date": "2025-12-31",
+      "description": "60-day checkpoint for checking MCC readiness.",
+      "type": "milestone"
+    },
+    {
+      "id": "metadata-deadline",
+      "label": "Metadata in Place",
+      "date": "2026-01-27",
+      "description": "Remind clinicians to upload supporting documents 120 days before NCCPA submission window closes.",
+      "type": "milestone"
+    },
+    {
+      "id": "cycle-end",
+      "label": "Cycle End",
+      "date": "2026-06-30",
+      "description": "All CME must be logged before NCCPA deadline; tracker will flag overdue items after 11:59 PM ET.",
+      "type": "cycle"
+    }
+  ],
+  "defects": {
+    "total": 3,
+    "critical": 0,
+    "lastUpdated": "2026-02-25T17:00:00Z"
+  }
+}
+</file>
+
+<file path="src/data/seed.ts">
+import seedJson from './seed.json';
+import type {
+  Activity,
+  DefectSummary,
+  KeyDate,
+  RawActivity,
+  ReviewStatus
+} from './types';
+
+const STORAGE_KEY = 'cycleready:v3:activities';
+const isBrowser = typeof window !== 'undefined';
+const RAW = seedJson as {
+  activities: RawActivity[];
+  keyDates: KeyDate[];
+  defects: DefectSummary;
+};
+
+const addTimelineIds = (activity: RawActivity): Activity => ({
+  ...activity,
+  timeline: activity.timeline.map((entry, index) => ({
+    ...entry,
+    id: `${activity.id}-timeline-${index}`
+  }))
+});
+
+export const requiredCredits = 60;
+export const reviewStatuses: ReviewStatus[] = [
+  'Accepted',
+  'Pending Review',
+  'Needs Correction',
+  'Rejected'
+];
+
+export const seedActivities: Activity[] = RAW.activities.map((activity) => addTimelineIds(activity));
+export const keyDates: KeyDate[] = RAW.keyDates;
+export const defectSummary: DefectSummary = RAW.defects;
+
+export function readStoredActivities(): Activity[] | null {
+  if (!isBrowser) return null;
+  const raw = window.localStorage.getItem(STORAGE_KEY);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw) as Activity[];
+  } catch (error) {
+    console.error('Failed to parse stored activities', error);
+    return null;
+  }
+}
+
+export function persistActivities(activities: Activity[]): void {
+  if (!isBrowser) return;
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(activities));
+}
+
+export function ensureSeededActivities(): Activity[] {
+  const stored = readStoredActivities();
+  if (stored) {
+    return stored;
+  }
+  const cloned = seedActivities.map((activity) => ({ ...activity }));
+  persistActivities(cloned);
+  return cloned;
+}
+</file>
+
+<file path="src/data/types.ts">
+export type ReviewStatus = 'Accepted' | 'Pending Review' | 'Needs Correction' | 'Rejected';
+export type Actor = 'Clinician' | 'Reviewer';
+
+export interface FileMetadata {
+  fileName: string;
+  fileType: string;
+  sizeInBytes: number;
+  uploadedAt: string;
+  notes?: string;
+}
+
+export interface ActivityTimelineEntry {
+  id: string;
+  actor: Actor;
+  action: string;
+  detail?: string;
+  timestamp: string;
+}
+
+export interface Activity {
+  id: string;
+  title: string;
+  provider: string;
+  category: string;
+  credits: number;
+  completionDate: string;
+  status: ReviewStatus;
+  notes?: string;
+  createdAt: string;
+  timeline: ActivityTimelineEntry[];
+  metadata?: FileMetadata;
+  reviewerNote?: string;
+}
+
+export interface KeyDate {
+  id: string;
+  label: string;
+  date: string;
+  description: string;
+  type: 'cycle' | 'milestone';
+}
+
+export interface DefectSummary {
+  total: number;
+  critical: number;
+  lastUpdated: string;
+}
+
+export interface RawTimelineEntry extends Omit<ActivityTimelineEntry, 'id'> {}
+
+export interface RawActivity extends Omit<Activity, 'timeline'> {
+  timeline: RawTimelineEntry[];
+}
+</file>
+
+<file path="src/utils/date.ts">
+const EASTERN_TIME_ZONE = 'America/New_York';
+
+export const formatDate = (value: string): string => {
+  const date = new Date(value);
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: EASTERN_TIME_ZONE
+  });
+};
+
+export const formatDateTime = (value: string): string => {
+  const date = new Date(value);
+  return date.toLocaleString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    timeZone: EASTERN_TIME_ZONE
+  });
+};
+
+export const daysUntil = (value: string, reference: Date = new Date()): number => {
+  const target = new Date(value);
+  const now = reference;
+  const diff = target.getTime() - now.getTime();
+  return Math.floor(diff / (1000 * 60 * 60 * 24));
+};
+
+export const dueStatus = (value: string, thresholds: { dueSoon: number; overdue: number } = { dueSoon: 14, overdue: 0 }): 'on-track' | 'due-soon' | 'overdue' => {
+  const remaining = daysUntil(value);
+  if (remaining <= thresholds.overdue) {
+    return 'overdue';
+  }
+  if (remaining <= thresholds.dueSoon) {
+    return 'due-soon';
+  }
+  return 'on-track';
+};
+</file>
+
+<file path="src/utils/format.ts">
+export const formatFileSize = (bytes: number): string => {
+  if (bytes < 1024) return `${bytes} B`;
+  const kb = bytes / 1024;
+  if (kb < 1024) return `${kb.toFixed(1)} KB`;
+  return `${(kb / 1024).toFixed(1)} MB`;
+};
+</file>
+
+<file path="src/index.css">
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: radial-gradient(120% 120% at 50% 0%, #0f172a 0%, #020617 60%);
+}
+</file>
+
+<file path="src/main.tsx">
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import './index.css';
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+</file>
+
+<file path="src/release-room.tsx">
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import ReleaseRoomPage from './components/ReleaseRoomPage';
+import './index.css';
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <ReleaseRoomPage />
+  </React.StrictMode>
+);
+</file>
+
+<file path="src/release-summary.tsx">
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import ReleaseSummaryPanel from './components/ReleaseSummaryPanel';
+import { releaseRoomPageHref, releasePacketPdfHref } from './data/release-room';
+import './index.css';
+
+function ReleaseSummaryPage() {
+  const basePath = import.meta.env.BASE_URL ?? '/';
+  const releaseRoomHref = releaseRoomPageHref;
+  const liveAppHref = basePath;
+
+  return (
+    <main className="min-h-screen bg-slate-950 py-10 text-slate-100">
+      <div className="mx-auto flex max-w-5xl flex-col gap-8 px-4">
+        <header className="space-y-3">
+          <p className="text-xs uppercase tracking-[0.4em] text-cyan-300">Phase 8 Release Room</p>
+          <h1 className="text-4xl font-semibold text-white">Release summary</h1>
+          <p className="text-sm text-slate-400">
+            Story coverage, automation results, and the remaining blockers that feed the go/no-go recommendation for this release.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <a
+              href={releaseRoomHref}
+              className="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:border-cyan-300"
+            >
+              Open release room
+            </a>
+            <a
+              href={liveAppHref}
+              className="rounded-full border border-amber-500/40 bg-amber-500/10 px-4 py-2 text-sm font-semibold text-amber-100 transition hover:border-amber-300"
+            >
+              Live app
+            </a>
+            <a
+              href={releasePacketPdfHref}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-full border border-cyan-500/40 bg-slate-900 px-4 py-2 text-sm font-semibold text-cyan-200 transition hover:border-cyan-300"
+            >
+              Download UAT packet
+            </a>
+          </div>
+        </header>
+        <ReleaseSummaryPanel />
+      </div>
+    </main>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <ReleaseSummaryPage />
+  </React.StrictMode>
+);
+</file>
+
+<file path="tests/smoke/cme-smoke.spec.ts">
+import { test, expect } from '@playwright/test';
+import { readFile } from 'node:fs/promises';
+import path from 'path';
+import { fileURLToPath } from 'node:url';
+
+const STORAGE_KEY = 'cycleready:v3:activities';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const seedPath = path.resolve(__dirname, '../../src/data/seed.json');
+let serializedActivities = '';
+
+test.beforeAll(async () => {
+  const raw = await readFile(seedPath, 'utf-8');
+  const parsed = JSON.parse(raw) as { activities: Array<{ id: string; timeline: Array<Record<string, unknown>> }>; };
+  const activitiesWithIds = parsed.activities.map((activity) => ({
+    ...activity,
+    timeline: activity.timeline.map((entry, index) => ({
+      ...entry,
+      id: `${activity.id}-timeline-${index}`
+    }))
+  }));
+  serializedActivities = JSON.stringify(activitiesWithIds);
+});
+
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript((activities) => {
+    window.localStorage.clear();
+    window.localStorage.setItem(STORAGE_KEY, activities);
+  }, serializedActivities);
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: /Thin CME QA product/i })).toBeVisible();
+});
+
+test('successful CME submission queues a new log and surfaces the confirmation banner', async ({ page }) => {
+  await page.getByLabel('Activity Title').fill('Remote collaboration workflow');
+  await page.getByLabel('Provider').fill('Remote CME Consortium');
+  await page.getByLabel('Credits').fill('3');
+  await page.getByLabel('Completion date').type('2026-02-28');
+  await page.getByLabel('Category').selectOption('Educational');
+  await page.getByRole('button', { name: /Save & queue for review/i }).click();
+
+  await expect(page.getByText(/CME log saved locally and pushed into history for review\./)).toBeVisible();
+  await expect(page.getByText(/Metadata will be added via the upload simulator\./i).first()).toBeVisible();
+});
+
+test('invalid submission is blocked and the validation banner appears', async ({ page }) => {
+  await page.getByRole('button', { name: /Save & queue for review/i }).click();
+
+  await expect(page.getByText(/One or more required fields are invalid/i)).toBeVisible();
+  await expect(page.getByText(/Title is required so QA knows which activity to test\./i)).toBeVisible();
+});
+
+test('reminders call out activities that still need supporting metadata', async ({ page }) => {
+  const reasonText = /Upload provider certificate metadata for Simulation CME log to satisfy reminders\./i;
+  await expect(page.getByText(reasonText)).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Upload metadata' })).toHaveCount(2);
+});
+
+test('history reflects the latest reviewer update in the detail text', async ({ page }) => {
+  const reviewNote = 'QA regression note recorded';
+  await page.getByRole('radio', { name: 'Needs Correction' }).check();
+  await page.getByLabel('Comment').fill(reviewNote);
+  await page.getByRole('button', { name: 'Save reviewer update' }).click();
+
+  await expect(page.getByText(/Reviewer update saved locally\./i)).toBeVisible();
+  await expect(page.getByText(reviewNote).first()).toBeVisible();
+  await expect(page.getByRole('heading', { name: /Newest submissions first/i })).toBeVisible();
+});
+</file>
+
+<file path="playwright.config.ts">
+import { defineConfig } from '@playwright/test';
+
+export default defineConfig({
+  testDir: './tests/smoke',
+  timeout: 60_000,
+  expect: {
+    timeout: 5000
+  },
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 1 : 0,
+  reporter: [
+    ['list'],
+    ['html', { outputFolder: 'playwright-report', open: 'never' }]
+  ],
+  use: {
+    baseURL: 'http://127.0.0.1:4173',
+    actionTimeout: 10000,
+    trace: 'on-first-retry',
+    video: 'retain-on-failure',
+    viewport: { width: 1280, height: 720 }
+  },
+  webServer: {
+    command: 'npm run dev -- --host 0.0.0.0 --port 4173',
+    port: 4173,
+    reuseExistingServer: !process.env.CI
+  }
+});
+</file>
+
+<file path="postcss.config.cjs">
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {}
+  }
+};
+</file>
+
+<file path="tailwind.config.ts">
+import type { Config } from 'tailwindcss';
+
+const config: Config = {
+  content: ['./index.html', './src/**/*.{ts,tsx}'],
+  theme: {
+    extend: {
+      colors: {
+        cyan: {
+          500: '#22d3ee'
+        },
+        teal: {
+          600: '#0f766e'
+        }
+      }
+    }
+  },
+  plugins: []
+};
+
+export default config;
+</file>
+
+<file path="src/App.tsx">
+import { useEffect, useMemo, useState } from 'react';
+import LogForm from './components/LogForm';
+import UploadSimulator from './components/UploadSimulator';
+import HistoryList from './components/HistoryList';
+import ReviewerPanel from './components/ReviewerPanel';
+import KeyDatesPanel from './components/KeyDatesPanel';
+import RemindersPanel, { type ReminderItem } from './components/RemindersPanel';
+import { ensureSeededActivities, persistActivities, keyDates, defectSummary, requiredCredits, seedActivities } from './data/seed';
+import type { Activity, FileMetadata, ReviewStatus } from './data/types';
+import { formatDate, daysUntil } from './utils/date';
+
+const basePath = import.meta.env.BASE_URL ?? '/';
+const releaseRoomHref = `${basePath}release-room.html`;
+const releaseSummaryHref = `${basePath}release-summary.html`;
+
+function App() {
+  const [activities, setActivities] = useState<Activity[]>(seedActivities);
+  const [selectedActivityId, setSelectedActivityId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const seeded = ensureSeededActivities();
+    setActivities(seeded);
+  }, []);
+
+  useEffect(() => {
+    if (!selectedActivityId && activities.length) {
+      setSelectedActivityId(activities[0].id);
+    }
+  }, [activities, selectedActivityId]);
+
+  const selectedActivity = useMemo(
+    () => activities.find((activity) => activity.id === selectedActivityId) ?? activities[0],
+    [activities, selectedActivityId]
+  );
+
+  const updateActivities = (updater: (items: Activity[]) => Activity[]) => {
+    setActivities((current) => {
+      const updated = updater(current);
+      persistActivities(updated);
+      return updated;
+    });
+  };
+
+  const creditsLogged = activities.reduce((sum, activity) => sum + activity.credits, 0);
+  const completionPercent = Math.min(100, Math.round((creditsLogged / requiredCredits) * 100));
+
+  const upcomingKeyDate = useMemo(() => {
+    const sorted = [...keyDates].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    const future = sorted.find((date) => daysUntil(date.date) >= 0);
+    return future ?? sorted[sorted.length - 1];
+  }, []);
+
+  const statusCounts = useMemo(() => {
+    const base: Record<ReviewStatus, number> = {
+      Accepted: 0,
+      'Pending Review': 0,
+      'Needs Correction': 0,
+      Rejected: 0
+    };
+    return activities.reduce((counts, activity) => {
+      counts[activity.status] += 1;
+      return counts;
+    }, base);
+  }, [activities]);
+
+  const readinessStatus = completionPercent >= 80 && defectSummary.critical === 0 ? 'On Track' : 'Monitoring';
+  const reminders: ReminderItem[] = useMemo(() => {
+    return activities
+      .filter((activity) => !activity.metadata || activity.status === 'Needs Correction')
+      .map((activity) => {
+        if (!activity.metadata) {
+          return {
+            id: activity.id,
+            title: activity.title,
+            provider: activity.provider,
+            status: activity.status,
+            reason: `Upload provider certificate metadata for ${activity.category} CME log to satisfy reminders.`,
+            actionLabel: 'Upload metadata',
+            actionHint: 'Required for QA to confirm the NCCPA documentation window.'
+          };
+        }
+        return {
+          id: activity.id,
+          title: activity.title,
+          provider: activity.provider,
+          status: activity.status,
+          reason: 'Reviewer asked for clarification; update status or attach the missing roster.',
+          actionLabel: 'Add notes',
+          actionHint: 'Clarify next steps so the timeline shows progress.'
+        };
+      });
+  }, [activities]);
+
+  const handleNewEntry = (entry: Activity) => {
+    updateActivities((prev) => [entry, ...prev]);
+    setSelectedActivityId(entry.id);
+  };
+
+  const handleMetadata = (activityId: string, metadata: FileMetadata) => {
+    updateActivities((prev) =>
+      prev.map((activity) =>
+        activity.id === activityId
+          ? {
+              ...activity,
+              metadata,
+              timeline: [
+                ...activity.timeline,
+                {
+                  id: `${activity.id}-timeline-${activity.timeline.length}`,
+                  actor: 'Clinician',
+                  action: 'Attached metadata',
+                  detail: metadata.fileName,
+                  timestamp: new Date().toISOString()
+                }
+              ]
+            }
+          : activity
+      )
+    );
+    setSelectedActivityId(activityId);
+  };
+
+  const handleStatusUpdate = (activityId: string, status: ReviewStatus, note?: string) => {
+    updateActivities((prev) =>
+      prev.map((activity) =>
+        activity.id === activityId
+          ? {
+              ...activity,
+              status,
+              reviewerNote: note,
+              timeline: [
+                ...activity.timeline,
+                {
+                  id: `${activity.id}-timeline-${activity.timeline.length}`,
+                  actor: 'Reviewer',
+                  action: status,
+                  detail: note,
+                  timestamp: new Date().toISOString()
+                }
+              ]
+            }
+          : activity
+      )
+    );
+    setSelectedActivityId(activityId);
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-950 pb-16">
+      <div className="mx-auto max-w-6xl space-y-8 px-4 py-10 sm:px-6 lg:px-8">
+        <header className="space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-[0.5em] text-cyan-300">CycleReady · Phase 3</p>
+          <h1 className="text-3xl font-semibold text-white sm:text-4xl">Thin CME QA product</h1>
+          <p className="max-w-3xl text-sm text-slate-400">
+            LocalStorage + seeded JSON keep data predictable while QA replays the NCCPA-friendly workflow—the dashboard, logging, upload metadata, history, and reviewer controls stay in sync.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <a
+              href={releaseRoomHref}
+              className="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white transition hover:border-cyan-300"
+            >
+              Release room
+            </a>
+            <a
+              href={releaseSummaryHref}
+              className="rounded-full border border-amber-500/40 bg-amber-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-amber-100 transition hover:border-amber-300"
+            >
+              Release summary
+            </a>
+          </div>
+        </header>
+
+        <section className="grid gap-6 xl:grid-cols-[1.35fr,0.65fr]">
+          <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900/80 to-slate-950/80 p-6 shadow-2xl shadow-slate-950/70">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.4em] text-slate-400">Credits logged</p>
+                <p className="text-5xl font-semibold text-white">{creditsLogged}</p>
+                <p className="text-xs uppercase tracking-[0.4em] text-slate-500">{completionPercent}% of {requiredCredits}</p>
+              </div>
+              <div className="flex h-24 w-24 items-center justify-center rounded-2xl border border-cyan-500/60 bg-slate-950/40 text-2xl font-semibold text-white">
+                {completionPercent}%
+              </div>
+            </div>
+            <div className="mt-6 grid gap-4 sm:grid-cols-2">
+              <div className="space-y-1 rounded-2xl border border-white/5 bg-white/5 p-4 text-slate-100">
+                <p className="text-xs uppercase tracking-[0.4em] text-slate-400">Next due</p>
+                <p className="text-lg font-semibold">{upcomingKeyDate.label}</p>
+                <p className="text-sm text-slate-300">
+                  {formatDate(upcomingKeyDate.date)} · {daysUntil(upcomingKeyDate.date) >= 0 ? `${daysUntil(upcomingKeyDate.date)} days left` : `${Math.abs(daysUntil(upcomingKeyDate.date))} days overdue`}
+                </p>
+              </div>
+              <div className="space-y-1 rounded-2xl border border-amber-500/30 bg-amber-500/5 p-4 text-slate-100">
+                <p className="text-xs uppercase tracking-[0.4em] text-amber-200">Reminders</p>
+                <p className="text-2xl font-semibold">{reminders.length}</p>
+                <p className="text-xs text-amber-100">Metadata or reviewer corrections still pending.</p>
+              </div>
+            </div>
+            <div className="mt-6 rounded-2xl border border-white/10 bg-slate-950/60 p-4 text-sm text-slate-300">
+              <div className="flex flex-wrap gap-3">
+                <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-white">Accepted {statusCounts.Accepted}</span>
+                <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-white">Pending {statusCounts['Pending Review']}</span>
+                <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-sky-200">Needs Correction {statusCounts['Needs Correction']}</span>
+                <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-rose-200">Rejected {statusCounts.Rejected}</span>
+              </div>
+              <div className="mt-3 grid gap-1 text-xs text-slate-400 sm:grid-cols-2">
+                <p>Open defects: {defectSummary.total} (critical {defectSummary.critical})</p>
+                <p>
+                  Readiness: <span className="font-semibold text-white">{readinessStatus}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <RemindersPanel reminders={reminders} onAction={(id) => setSelectedActivityId(id)} />
+        </section>
+
+        <KeyDatesPanel keyDates={keyDates} />
+
+        <section className="grid gap-6 lg:grid-cols-2">
+          <LogForm onSave={handleNewEntry} totalCredits={creditsLogged} requiredCredits={requiredCredits} />
+          <UploadSimulator selectedActivity={selectedActivity} onSaveMetadata={handleMetadata} />
+        </section>
+
+        <section className="grid gap-6 xl:grid-cols-2">
+          <HistoryList activities={activities} />
+          <ReviewerPanel activity={selectedActivity} onUpdateStatus={handleStatusUpdate} />
+        </section>
+      </div>
+    </div>
+  );
+}
+
+export default App;
+</file>
+
+<file path=".gitignore">
+node_modules/
+dist/
+.env
+.vscode/
+.idea/
+*.log
+*.local
+playwright-report/
+test-results/
+</file>
+
+<file path="README.md">
+# CycleReady QA Release Room
+
+Thin-demo proof of a clinician QA workflow that tracks CME logging, reminders, reviewer interactions, and release readiness for a CME recertification release. Built as a Phase 8 “Release Room” microsite, it bundles the live dashboard, release summary, QA artifacts, and final memo into a single portfolio-ready experience.
+
+![Defect board snapshot](public/assets/portfolio/defect-board.svg)
+![UAT checklist snapshot](public/assets/portfolio/uat-checklist.svg)
+![Release summary snapshot](public/assets/portfolio/release-summary.svg)
+
+## Table of contents
+- [What it demonstrates](#what-it-demonstrates)
+- [Release narrative](#release-narrative)
+- [Data & UX](#data--ux)
+- [Tech stack & automation](#tech-stack--automation)
+- [Getting started](#getting-started)
+- [Release artifacts](#release-artifacts)
+- [Testing](#testing)
+- [Deployment](#deployment)
+- [Résumé-ready takeaway](#résumé-ready-takeaway)
+
+## What it demonstrates
+- **Clinician QA dashboard**: seeded CME activities stored in `src/data/seed.json` feed `src/App.tsx`, showing credits logged, completion %, reviewer statuses, key dates, and timeline widgets.
+- **Reviewer workflow controls**: `LogForm`, `UploadSimulator`, `ReviewerPanel`, and `RemindersPanel` keep the dashboard in sync while the reviewer can request corrections, change status, or mark uploads complete.
+- **History & reminders**: `HistoryList` highlights the clinician’s timeline, and `RemindersPanel` surfaces missing metadata or correction requests tied to each activity.
+- **Release-room microsite**: `src/components/ReleaseRoomPage.tsx` aggregates readiness metrics, defect board, evidence links, and the QA signoff memo for an executive snapshot, while `ReleaseSummaryPanel` powers the accompanying summary entrypoint (`release-summary.html`).
+- **Static proof of release readiness**: no backend is required—React + Vite renders the experience using LocalStorage to persist clinician activities between sessions.
+
+## Release narrative
+1. **Dashboard (root `/`)** mirrors a clinician logbook with seeded entries plus timeline history, making it easy to step through QA scenarios (approved activities, pending reviews, requested corrections).
+2. **Release Room (`release-room.html`)** surfaces QA readiness by combining the story coverage percentage, Playwright smoke suite summary, open defect board (`src/data/release-room.ts`), and linked evidence (UAT plans, results, triage guidelines).
+3. **Release Summary (`release-summary.html`)** distills the recommendation, blocker owners, and final QA memo so stakeholders get a fast go/no-go brief.
+
+## Data & UX
+- **Seeded content**: `src/data/seed.json` contains clinician activity logs, key NCCPA dates, and defect summary metadata that feeds `seedActivities`, `keyDates`, and `defectSummary` across the app.
+- **Activity lifecycle**: adding or editing an entry updates `LocalStorage` via `persistActivities`, ensuring status counts, reminders, and reviewer notes stay consistent for credit tracking.
+- **Timeline storytelling**: Each activity’s timeline entries (`activity.timeline`) capture clinician submissions and reviewer actions so QA reviewers can replay conversations.
+
+## Tech stack & automation
+- **UI layer**: Vite + React + TypeScript + Tailwind CSS keeps the microsite bundle light whilst providing responsive layouts and gradient styling.
+- **Data modeling**: Type definitions in `src/data/types.ts` (used by components and helpers) keep CME logs, reviews, and release metadata strongly typed.
+- **Automation & docs**: Playwright (`npm run test:e2e`) powers the smoke suite (reports land under `playwright-report/index.html`), and `npm run docs:pdf` uses Pandoc + WeasyPrint to re-export `docs/uat-plan.md` as a PDF proof (`public/assets/cycleready-uat-packet.pdf`).
+
+## Getting started
+1. `npm install`
+2. `npm run dev` → visit `http://localhost:5173/` for the dashboard, open `http://localhost:5173/release-room.html` for the Release Room, and `http://localhost:5173/release-summary.html` for the executive summary experience.
+3. `npm run build` produces the static `dist/` bundle that includes both `release-room` and `release-summary` entrypoints (ready for GitHub Pages).
+
+## Release artifacts
+- **UAT packet**: `npm run docs:pdf` converts `docs/uat-plan.md` to `public/assets/cycleready-uat-packet.pdf`; requires WeasyPrint (`python3 -m pip install --user weasyprint`). The script prepends the user’s `bin` directory via `python3 -c 'import site, os; print(os.path.join(site.USER_BASE, "bin"))'` so the binary is discoverable.
+- **Test evidence**: `Playwright smoke report` lives in `playwright-report/index.html`, while UAT logs and triage guidelines link back to `docs/uat-results.md` and `docs/triage-guidelines.md`.
+- **Defect tracking**: `src/data/release-room.ts` defines open issues (IDs CR-401, CR-312, CR-287) complete with severity, owner, status, and triage steps, which power the Release Room board.
+
+## Testing
+- `npm run test:e2e` runs the Playwright smoke suite and writes artifacts to `playwright-report/` for reference.
+- `npm run build` ensures both entrypoints bundle correctly for static hosting.
+
+## Deployment
+- GitHub Pages workflow (`.github/workflows/pages.yml`) publishes `dist/` to `gh-pages` on every push/PR to `master`, making the Release Room available at `https://josuejero.github.io/CycleReady/release-room` and the summary at `https://josuejero.github.io/CycleReady/release-summary.html`.
+- `npm run docs:pdf` must be rerun whenever `docs/uat-plan.md` changes to keep the published PDF in sync.
+
+## Résumé-ready takeaway
+> Led a QA release-readiness simulation for a CME/recertification workflow, including acceptance-criteria review, UAT design, defect triage, smoke automation with Playwright, and final release reporting.
+
+## Why it matters
+- Demonstrates ownership across a full QA loop: from clinician submissions through reviewer remediation, through automation, and into the final go/no-go memo.
+- Offers a portfolio-friendly narrative with live release-room evidence, exportable UAT packet, and automation proof points that remix existing Vite/React tooling into a single release-ready experience.
+</file>
+
+<file path="release-room.html">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CycleReady Release Room</title>
+  </head>
+  <body class="bg-slate-950 text-slate-100">
+    <div id="root"></div>
+    <script type="module">
+      const LOCAL_HOSTS = ['localhost', '127.0.0.1', '::1'];
+      const CDN_BASE = 'https://cdn.jsdelivr.net/gh/josuejero/CycleReady@gh-pages';
+      const MANIFEST_URL = `${CDN_BASE}/.vite/manifest.json`;
+      const ENTRY_KEY = 'release-room.html';
+      const DEV_ENTRY = '/src/release-room.tsx';
+
+      (async () => {
+        if (LOCAL_HOSTS.includes(location.hostname)) {
+          await import(DEV_ENTRY);
+          return;
+        }
+        await loadEntry(ENTRY_KEY);
+      })();
+
+      async function loadEntry(entryKey) {
+        try {
+          const manifestResp = await fetch(MANIFEST_URL);
+          if (!manifestResp.ok) {
+            throw new Error(`Could not fetch manifest (${manifestResp.status})`);
+          }
+          const manifest = await manifestResp.json();
+          const entry = manifest[entryKey];
+          if (!entry) {
+            throw new Error(`Manifest entry not found: ${entryKey}`);
+          }
+          const cssFiles = new Set();
+          collectCssFiles(entryKey, manifest, cssFiles);
+          cssFiles.forEach((cssFile) => {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = `${CDN_BASE}/${cssFile}`;
+            link.crossOrigin = 'anonymous';
+            document.head.appendChild(link);
+          });
+          const script = document.createElement('script');
+          script.type = 'module';
+          script.crossOrigin = 'anonymous';
+          script.src = `${CDN_BASE}/${entry.file}`;
+          document.body.appendChild(script);
+        } catch (error) {
+          console.error('CycleReady bundle failed to load from CDN', error);
+          const fallback = document.createElement('div');
+          fallback.textContent = 'The release-room bundle could not be loaded. Please try again later.';
+          Object.assign(fallback.style, {
+            padding: '1rem',
+            margin: '1rem',
+            borderRadius: '0.5rem',
+            backgroundColor: '#7c1dff',
+            color: '#fff',
+            fontFamily: 'system-ui, sans-serif'
+          });
+          document.body.insertBefore(fallback, document.body.firstChild);
+        }
+      }
+
+      function collectCssFiles(entryKey, manifest, cssFiles, seen = new Set()) {
+        if (seen.has(entryKey)) {
+          return;
+        }
+        seen.add(entryKey);
+        const entry = manifest[entryKey];
+        if (!entry) {
+          return;
+        }
+        (entry.css || []).forEach((cssFile) => cssFiles.add(cssFile));
+        (entry.imports || []).forEach((childKey) => collectCssFiles(childKey, manifest, cssFiles, seen));
+      }
+    </script>
+  </body>
+</html>
+</file>
+
+<file path="release-summary.html">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CycleReady Release Summary</title>
+  </head>
+  <body class="bg-slate-950 text-slate-100">
+    <div id="root"></div>
+    <script type="module">
+      const LOCAL_HOSTS = ['localhost', '127.0.0.1', '::1'];
+      const CDN_BASE = 'https://cdn.jsdelivr.net/gh/josuejero/CycleReady@gh-pages';
+      const MANIFEST_URL = `${CDN_BASE}/.vite/manifest.json`;
+      const ENTRY_KEY = 'release-summary.html';
+      const DEV_ENTRY = '/src/release-summary.tsx';
+
+      (async () => {
+        if (LOCAL_HOSTS.includes(location.hostname)) {
+          await import(DEV_ENTRY);
+          return;
+        }
+        await loadEntry(ENTRY_KEY);
+      })();
+
+      async function loadEntry(entryKey) {
+        try {
+          const manifestResp = await fetch(MANIFEST_URL);
+          if (!manifestResp.ok) {
+            throw new Error(`Could not fetch manifest (${manifestResp.status})`);
+          }
+          const manifest = await manifestResp.json();
+          const entry = manifest[entryKey];
+          if (!entry) {
+            throw new Error(`Manifest entry not found: ${entryKey}`);
+          }
+          const cssFiles = new Set();
+          collectCssFiles(entryKey, manifest, cssFiles);
+          cssFiles.forEach((cssFile) => {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = `${CDN_BASE}/${cssFile}`;
+            link.crossOrigin = 'anonymous';
+            document.head.appendChild(link);
+          });
+          const script = document.createElement('script');
+          script.type = 'module';
+          script.crossOrigin = 'anonymous';
+          script.src = `${CDN_BASE}/${entry.file}`;
+          document.body.appendChild(script);
+        } catch (error) {
+          console.error('CycleReady summary bundle failed to load from CDN', error);
+          const fallback = document.createElement('div');
+          fallback.textContent = 'The release-summary bundle could not be loaded. Please try again later.';
+          Object.assign(fallback.style, {
+            padding: '1rem',
+            margin: '1rem',
+            borderRadius: '0.5rem',
+            backgroundColor: '#7c1dff',
+            color: '#fff',
+            fontFamily: 'system-ui, sans-serif'
+          });
+          document.body.insertBefore(fallback, document.body.firstChild);
+        }
+      }
+
+      function collectCssFiles(entryKey, manifest, cssFiles, seen = new Set()) {
+        if (seen.has(entryKey)) {
+          return;
+        }
+        seen.add(entryKey);
+        const entry = manifest[entryKey];
+        if (!entry) {
+          return;
+        }
+        (entry.css || []).forEach((cssFile) => cssFiles.add(cssFile));
+        (entry.imports || []).forEach((childKey) => collectCssFiles(childKey, manifest, cssFiles, seen));
+      }
+    </script>
+  </body>
+</html>
+</file>
+
+<file path="tsconfig.json">
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "jsx": "react-jsx",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": false,
+    "skipLibCheck": true,
+    "useDefineForClassFields": true,
+    "types": ["vite/client", "node"]
+  },
+  "include": ["src", "tests"]
+}
+</file>
+
+<file path=".github/workflows/pages.yml">
+name: GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+permissions:
+  contents: write
+  pages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+      - name: Debug dist output
+        run: |
+          echo "dist size and entries:"
+          du -sh dist
+          ls -al dist
+          echo ".vite manifest (if present):"
+          if [ -f dist/.vite/manifest.json ]; then
+            cat dist/.vite/manifest.json
+          else
+            echo "manifest missing"
+          fi
+      - name: Deploy release room
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          commit_message: "chore: deploy release room"
+</file>
+
+<file path="package.json">
+{
+  "name": "cycleready",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:e2e": "playwright test",
+    "docs:pdf": "PATH=\"$(python3 -c 'import site, os; print(os.path.join(site.USER_BASE, \"bin\"))'):$PATH\" pandoc docs/uat-plan.md -o public/assets/cycleready-uat-packet.pdf --pdf-engine=weasyprint"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.58.2",
+    "@types/node": "25.3.3",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.1.0",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.34",
+    "tailwindcss": "^3.4.4",
+    "typescript": "^5.3.2",
+    "vite": "^5.0.3"
+  }
+}
+</file>
+
+<file path="vite.config.ts">
+import { resolve } from 'node:path';
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  base: '/CycleReady/',
+  plugins: [react()],
+  build: {
+    manifest: true,
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        releaseRoom: resolve(__dirname, 'release-room.html'),
+        releaseSummary: resolve(__dirname, 'release-summary.html')
+      }
+    }
+  }
+});
+</file>
+
+<file path="index.html">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CycleReady</title>
+  </head>
+  <body class="bg-slate-950 text-slate-100">
+    <div id="root"></div>
+    <script type="module">
+      const LOCAL_HOSTS = ['localhost', '127.0.0.1', '::1'];
+      const CDN_BASE = 'https://cdn.jsdelivr.net/gh/josuejero/CycleReady@gh-pages';
+      const MANIFEST_URL = `${CDN_BASE}/.vite/manifest.json`;
+      const ENTRY_KEY = 'index.html';
+      const DEV_ENTRY = '/src/main.tsx';
+
+      (async () => {
+        if (LOCAL_HOSTS.includes(location.hostname)) {
+          await import(/* @vite-ignore */ DEV_ENTRY);
+          return;
+        }
+        await loadEntry(ENTRY_KEY);
+      })();
+
+      async function loadEntry(entryKey) {
+        try {
+          const manifestResp = await fetch(MANIFEST_URL);
+          if (!manifestResp.ok) {
+            throw new Error(`Could not fetch manifest (${manifestResp.status})`);
+          }
+          const manifest = await manifestResp.json();
+          const entry = manifest[entryKey];
+          if (!entry) {
+            throw new Error(`Manifest entry not found: ${entryKey}`);
+          }
+          const cssFiles = new Set();
+          collectCssFiles(entryKey, manifest, cssFiles);
+          cssFiles.forEach((cssFile) => {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = `${CDN_BASE}/${cssFile}`;
+            link.crossOrigin = 'anonymous';
+            document.head.appendChild(link);
+          });
+          const script = document.createElement('script');
+          script.type = 'module';
+          script.crossOrigin = 'anonymous';
+          script.src = `${CDN_BASE}/${entry.file}`;
+          document.body.appendChild(script);
+        } catch (error) {
+          console.error('CycleReady bundle failed to load from CDN', error);
+          const fallback = document.createElement('div');
+          fallback.textContent = 'The app bundle could not be loaded. Please try again later.';
+          Object.assign(fallback.style, {
+            padding: '1rem',
+            margin: '1rem',
+            borderRadius: '0.5rem',
+            backgroundColor: '#7c1dff',
+            color: '#fff',
+            fontFamily: 'system-ui, sans-serif'
+          });
+          document.body.insertBefore(fallback, document.body.firstChild);
+        }
+      }
+
+      function collectCssFiles(entryKey, manifest, cssFiles, seen = new Set()) {
+        if (seen.has(entryKey)) {
+          return;
+        }
+        seen.add(entryKey);
+        const entry = manifest[entryKey];
+        if (!entry) {
+          return;
+        }
+        (entry.css || []).forEach((cssFile) => cssFiles.add(cssFile));
+        (entry.imports || []).forEach((childKey) => collectCssFiles(childKey, manifest, cssFiles, seen));
+      }
+    </script>
+  </body>
+</html>
+</file>
+
+</files>

@@ -7,3 +7,5 @@ dist/
 *.local
 playwright-report/
 test-results/
+public/docs/
+public/playwright-report/
