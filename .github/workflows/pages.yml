@@ -23,6 +23,17 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run build
+      - name: Debug dist output
+        run: |
+          echo "dist size and entries:"
+          du -sh dist
+          ls -al dist
+          echo ".vite manifest (if present):"
+          if [ -f dist/.vite/manifest.json ]; then
+            cat dist/.vite/manifest.json
+          else
+            echo "manifest missing"
+          fi
       - name: Deploy release room
         uses: peaceiris/actions-gh-pages@v4
         with:
