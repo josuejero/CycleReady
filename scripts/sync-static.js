@@ -16,6 +16,15 @@ async function ensureSourceExists(source, name) {
   }
 }
 
+async function directoryExists(source) {
+  try {
+    await access(source, constants.F_OK);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 async function syncDirectory(source, target, name) {
   await rm(target, { recursive: true, force: true });
   await cp(source, target, { recursive: true });
@@ -24,9 +33,13 @@ async function syncDirectory(source, target, name) {
 
 async function main() {
   await ensureSourceExists(docsSource, 'docs');
-  await ensureSourceExists(reportSource, 'playwright-report');
   await syncDirectory(docsSource, docsTarget, 'docs');
-  await syncDirectory(reportSource, reportTarget, 'playwright report');
+
+  if (await directoryExists(reportSource)) {
+    await syncDirectory(reportSource, reportTarget, 'playwright report');
+  } else {
+    console.warn(`Skipping playwright report sync; ${reportSource} not found.`);
+  }
 }
 
 main().catch((error) => {
