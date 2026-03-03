@@ -1,0 +1,33 @@
+{
+  "_modulepreload-polyfill-B5Qt9EMX.js": {
+    "file": "assets/modulepreload-polyfill-B5Qt9EMX.js",
+    "name": "modulepreload-polyfill"
+  },
+  "index.html": {
+    "file": "assets/main-BJpASEJA.js",
+    "name": "main",
+    "src": "index.html",
+    "isEntry": true,
+    "imports": [
+      "_modulepreload-polyfill-B5Qt9EMX.js"
+    ]
+  },
+  "release-room.html": {
+    "file": "assets/releaseRoom-7cZpkbJk.js",
+    "name": "releaseRoom",
+    "src": "release-room.html",
+    "isEntry": true,
+    "imports": [
+      "_modulepreload-polyfill-B5Qt9EMX.js"
+    ]
+  },
+  "release-summary.html": {
+    "file": "assets/releaseSummary-DgIOhgee.js",
+    "name": "releaseSummary",
+    "src": "release-summary.html",
+    "isEntry": true,
+    "imports": [
+      "_modulepreload-polyfill-B5Qt9EMX.js"
+    ]
+  }
+}
