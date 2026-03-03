@@ -1,0 +1,11 @@
+<svg width="320" height="200" viewBox="0 0 320 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="320" height="200" rx="20" fill="#0f172a" />
+  <rect x="24" y="24" width="272" height="28" rx="8" fill="#1e293b" />
+  <rect x="24" y="70" width="272" height="18" rx="6" fill="#134e4a" />
+  <rect x="24" y="98" width="272" height="18" rx="6" fill="#075985" />
+  <rect x="24" y="126" width="272" height="18" rx="6" fill="#ca8a04" />
+  <circle cx="48" cy="140" r="5" fill="#22c55e" />
+  <circle cx="90" cy="140" r="5" fill="#f97316" />
+  <circle cx="132" cy="140" r="5" fill="#ef4444" />
+  <text x="30" y="182" fill="#94a3b8" font-size="12" font-family="Inter">Defect board snapshot</text>
+</svg>

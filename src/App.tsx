@@ -9,6 +9,10 @@ import { ensureSeededActivities, persistActivities, keyDates, defectSummary, req
 import type { Activity, FileMetadata, ReviewStatus } from './data/types';
 import { formatDate, daysUntil } from './utils/date';
 
+const basePath = import.meta.env.BASE_URL ?? '/';
+const releaseRoomHref = `${basePath}release-room.html`;
+const releaseSummaryHref = `${basePath}release-summary.html`;
+
 function App() {
   const [activities, setActivities] = useState<Activity[]>(seedActivities);
   const [selectedActivityId, setSelectedActivityId] = useState<string | null>(null);
@@ -150,6 +154,20 @@ function App() {
           <p className="max-w-3xl text-sm text-slate-400">
             LocalStorage + seeded JSON keep data predictable while QA replays the NCCPA-friendly workflow—the dashboard, logging, upload metadata, history, and reviewer controls stay in sync.
           </p>
+          <div className="flex flex-wrap gap-3">
+            <a
+              href={releaseRoomHref}
+              className="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white transition hover:border-cyan-300"
+            >
+              Release room
+            </a>
+            <a
+              href={releaseSummaryHref}
+              className="rounded-full border border-amber-500/40 bg-amber-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-amber-100 transition hover:border-amber-300"
+            >
+              Release summary
+            </a>
+          </div>
         </header>
 
         <section className="grid gap-6 xl:grid-cols-[1.35fr,0.65fr]">
