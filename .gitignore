@@ -5,3 +5,5 @@ dist/
 .idea/
 *.log
 *.local
+playwright-report/
+test-results/
