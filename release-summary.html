@@ -7,6 +7,74 @@
   </head>
   <body class="bg-slate-950 text-slate-100">
     <div id="root"></div>
-    <script type="module" src="/src/release-summary.tsx"></script>
+    <script type="module">
+      const LOCAL_HOSTS = ['localhost', '127.0.0.1', '::1'];
+      const CDN_BASE = 'https://cdn.jsdelivr.net/gh/josuejero/CycleReady@gh-pages';
+      const MANIFEST_URL = `${CDN_BASE}/.vite/manifest.json`;
+      const ENTRY_KEY = 'release-summary.html';
+      const DEV_ENTRY = '/src/release-summary.tsx';
+
+      (async () => {
+        if (LOCAL_HOSTS.includes(location.hostname)) {
+          await import(DEV_ENTRY);
+          return;
+        }
+        await loadEntry(ENTRY_KEY);
+      })();
+
+      async function loadEntry(entryKey) {
+        try {
+          const manifestResp = await fetch(MANIFEST_URL);
+          if (!manifestResp.ok) {
+            throw new Error(`Could not fetch manifest (${manifestResp.status})`);
+          }
+          const manifest = await manifestResp.json();
+          const entry = manifest[entryKey];
+          if (!entry) {
+            throw new Error(`Manifest entry not found: ${entryKey}`);
+          }
+          const cssFiles = new Set();
+          collectCssFiles(entryKey, manifest, cssFiles);
+          cssFiles.forEach((cssFile) => {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = `${CDN_BASE}/${cssFile}`;
+            link.crossOrigin = 'anonymous';
+            document.head.appendChild(link);
+          });
+          const script = document.createElement('script');
+          script.type = 'module';
+          script.crossOrigin = 'anonymous';
+          script.src = `${CDN_BASE}/${entry.file}`;
+          document.body.appendChild(script);
+        } catch (error) {
+          console.error('CycleReady summary bundle failed to load from CDN', error);
+          const fallback = document.createElement('div');
+          fallback.textContent = 'The release-summary bundle could not be loaded. Please try again later.';
+          Object.assign(fallback.style, {
+            padding: '1rem',
+            margin: '1rem',
+            borderRadius: '0.5rem',
+            backgroundColor: '#7c1dff',
+            color: '#fff',
+            fontFamily: 'system-ui, sans-serif'
+          });
+          document.body.insertBefore(fallback, document.body.firstChild);
+        }
+      }
+
+      function collectCssFiles(entryKey, manifest, cssFiles, seen = new Set()) {
+        if (seen.has(entryKey)) {
+          return;
+        }
+        seen.add(entryKey);
+        const entry = manifest[entryKey];
+        if (!entry) {
+          return;
+        }
+        (entry.css || []).forEach((cssFile) => cssFiles.add(cssFile));
+        (entry.imports || []).forEach((childKey) => collectCssFiles(childKey, manifest, cssFiles, seen));
+      }
+    </script>
   </body>
 </html>
