@@ -78,6 +78,8 @@ public/
       release-summary.svg
       uat-checklist.svg
     cycleready-uat-packet.pdf
+scripts/
+  sync-static.js
 src/
   components/
     HistoryList.tsx
@@ -2694,6 +2696,57 @@ const config: Config = {
 export default config;
 </file>
 
+<file path="scripts/sync-static.js">
+import { access, cp, rm } from 'node:fs/promises';
+import { constants } from 'node:fs';
+import { resolve } from 'node:path';
+
+const projectRoot = process.cwd();
+const docsSource = resolve(projectRoot, 'docs');
+const docsTarget = resolve(projectRoot, 'public', 'docs');
+const reportSource = resolve(projectRoot, 'playwright-report');
+const reportTarget = resolve(projectRoot, 'public', 'playwright-report');
+
+async function ensureSourceExists(source, name) {
+  try {
+    await access(source, constants.F_OK);
+  } catch (err) {
+    throw new Error(`Missing ${name} directory at ${source}`);
+  }
+}
+
+async function directoryExists(source) {
+  try {
+    await access(source, constants.F_OK);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function syncDirectory(source, target, name) {
+  await rm(target, { recursive: true, force: true });
+  await cp(source, target, { recursive: true });
+  console.log(`Synced ${name} from ${source} to ${target}`);
+}
+
+async function main() {
+  await ensureSourceExists(docsSource, 'docs');
+  await syncDirectory(docsSource, docsTarget, 'docs');
+
+  if (await directoryExists(reportSource)) {
+    await syncDirectory(reportSource, reportTarget, 'playwright report');
+  } else {
+    console.warn(`Skipping playwright report sync; ${reportSource} not found.`);
+  }
+}
+
+main().catch((error) => {
+  console.error('Failed to sync static assets:', error);
+  process.exit(1);
+});
+</file>
+
 <file path="src/App.tsx">
 import { useEffect, useMemo, useState } from 'react';
 import LogForm from './components/LogForm';
@@ -2931,18 +2984,6 @@ function App() {
 export default App;
 </file>
 
-<file path=".gitignore">
-node_modules/
-dist/
-.env
-.vscode/
-.idea/
-*.log
-*.local
-playwright-report/
-test-results/
-</file>
-
 <file path="README.md">
 # CycleReady QA Release Room
 
@@ -3011,172 +3052,6 @@ Thin-demo proof of a clinician QA workflow that tracks CME logging, reminders, r
 - Offers a portfolio-friendly narrative with live release-room evidence, exportable UAT packet, and automation proof points that remix existing Vite/React tooling into a single release-ready experience.
 </file>
 
-<file path="release-room.html">
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CycleReady Release Room</title>
-  </head>
-  <body class="bg-slate-950 text-slate-100">
-    <div id="root"></div>
-    <script type="module">
-      const LOCAL_HOSTS = ['localhost', '127.0.0.1', '::1'];
-      const CDN_BASE = 'https://cdn.jsdelivr.net/gh/josuejero/CycleReady@gh-pages';
-      const MANIFEST_URL = `${CDN_BASE}/.vite/manifest.json`;
-      const ENTRY_KEY = 'release-room.html';
-      const DEV_ENTRY = '/src/release-room.tsx';
-
-      (async () => {
-        if (LOCAL_HOSTS.includes(location.hostname)) {
-          await import(DEV_ENTRY);
-          return;
-        }
-        await loadEntry(ENTRY_KEY);
-      })();
-
-      async function loadEntry(entryKey) {
-        try {
-          const manifestResp = await fetch(MANIFEST_URL);
-          if (!manifestResp.ok) {
-            throw new Error(`Could not fetch manifest (${manifestResp.status})`);
-          }
-          const manifest = await manifestResp.json();
-          const entry = manifest[entryKey];
-          if (!entry) {
-            throw new Error(`Manifest entry not found: ${entryKey}`);
-          }
-          const cssFiles = new Set();
-          collectCssFiles(entryKey, manifest, cssFiles);
-          cssFiles.forEach((cssFile) => {
-            const link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = `${CDN_BASE}/${cssFile}`;
-            link.crossOrigin = 'anonymous';
-            document.head.appendChild(link);
-          });
-          const script = document.createElement('script');
-          script.type = 'module';
-          script.crossOrigin = 'anonymous';
-          script.src = `${CDN_BASE}/${entry.file}`;
-          document.body.appendChild(script);
-        } catch (error) {
-          console.error('CycleReady bundle failed to load from CDN', error);
-          const fallback = document.createElement('div');
-          fallback.textContent = 'The release-room bundle could not be loaded. Please try again later.';
-          Object.assign(fallback.style, {
-            padding: '1rem',
-            margin: '1rem',
-            borderRadius: '0.5rem',
-            backgroundColor: '#7c1dff',
-            color: '#fff',
-            fontFamily: 'system-ui, sans-serif'
-          });
-          document.body.insertBefore(fallback, document.body.firstChild);
-        }
-      }
-
-      function collectCssFiles(entryKey, manifest, cssFiles, seen = new Set()) {
-        if (seen.has(entryKey)) {
-          return;
-        }
-        seen.add(entryKey);
-        const entry = manifest[entryKey];
-        if (!entry) {
-          return;
-        }
-        (entry.css || []).forEach((cssFile) => cssFiles.add(cssFile));
-        (entry.imports || []).forEach((childKey) => collectCssFiles(childKey, manifest, cssFiles, seen));
-      }
-    </script>
-  </body>
-</html>
-</file>
-
-<file path="release-summary.html">
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CycleReady Release Summary</title>
-  </head>
-  <body class="bg-slate-950 text-slate-100">
-    <div id="root"></div>
-    <script type="module">
-      const LOCAL_HOSTS = ['localhost', '127.0.0.1', '::1'];
-      const CDN_BASE = 'https://cdn.jsdelivr.net/gh/josuejero/CycleReady@gh-pages';
-      const MANIFEST_URL = `${CDN_BASE}/.vite/manifest.json`;
-      const ENTRY_KEY = 'release-summary.html';
-      const DEV_ENTRY = '/src/release-summary.tsx';
-
-      (async () => {
-        if (LOCAL_HOSTS.includes(location.hostname)) {
-          await import(DEV_ENTRY);
-          return;
-        }
-        await loadEntry(ENTRY_KEY);
-      })();
-
-      async function loadEntry(entryKey) {
-        try {
-          const manifestResp = await fetch(MANIFEST_URL);
-          if (!manifestResp.ok) {
-            throw new Error(`Could not fetch manifest (${manifestResp.status})`);
-          }
-          const manifest = await manifestResp.json();
-          const entry = manifest[entryKey];
-          if (!entry) {
-            throw new Error(`Manifest entry not found: ${entryKey}`);
-          }
-          const cssFiles = new Set();
-          collectCssFiles(entryKey, manifest, cssFiles);
-          cssFiles.forEach((cssFile) => {
-            const link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = `${CDN_BASE}/${cssFile}`;
-            link.crossOrigin = 'anonymous';
-            document.head.appendChild(link);
-          });
-          const script = document.createElement('script');
-          script.type = 'module';
-          script.crossOrigin = 'anonymous';
-          script.src = `${CDN_BASE}/${entry.file}`;
-          document.body.appendChild(script);
-        } catch (error) {
-          console.error('CycleReady summary bundle failed to load from CDN', error);
-          const fallback = document.createElement('div');
-          fallback.textContent = 'The release-summary bundle could not be loaded. Please try again later.';
-          Object.assign(fallback.style, {
-            padding: '1rem',
-            margin: '1rem',
-            borderRadius: '0.5rem',
-            backgroundColor: '#7c1dff',
-            color: '#fff',
-            fontFamily: 'system-ui, sans-serif'
-          });
-          document.body.insertBefore(fallback, document.body.firstChild);
-        }
-      }
-
-      function collectCssFiles(entryKey, manifest, cssFiles, seen = new Set()) {
-        if (seen.has(entryKey)) {
-          return;
-        }
-        seen.add(entryKey);
-        const entry = manifest[entryKey];
-        if (!entry) {
-          return;
-        }
-        (entry.css || []).forEach((cssFile) => cssFiles.add(cssFile));
-        (entry.imports || []).forEach((childKey) => collectCssFiles(childKey, manifest, cssFiles, seen));
-      }
-    </script>
-  </body>
-</html>
-</file>
-
 <file path="tsconfig.json">
 {
   "compilerOptions": {
@@ -3197,49 +3072,97 @@ Thin-demo proof of a clinician QA workflow that tracks CME logging, reminders, r
 }
 </file>
 
+<file path=".gitignore">
+node_modules/
+dist/
+.env
+.vscode/
+.idea/
+*.log
+*.local
+playwright-report/
+test-results/
+public/docs/
+public/playwright-report/
+</file>
+
+<file path="release-room.html">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CycleReady Release Room</title>
+  </head>
+  <body class="bg-slate-950 text-slate-100">
+    <div id="root"></div>
+    <script type="module" src="/src/release-room.tsx"></script>
+  </body>
+</html>
+</file>
+
+<file path="release-summary.html">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CycleReady Release Summary</title>
+  </head>
+  <body class="bg-slate-950 text-slate-100">
+    <div id="root"></div>
+    <script type="module" src="/src/release-summary.tsx"></script>
+  </body>
+</html>
+</file>
+
 <file path=".github/workflows/pages.yml">
-name: GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+    branches: [master]
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: 20
+          cache: npm
+
       - run: npm ci
       - run: npm run build
-      - name: Debug dist output
-        run: |
-          echo "dist size and entries:"
-          du -sh dist
-          ls -al dist
-          echo ".vite manifest (if present):"
-          if [ -f dist/.vite/manifest.json ]; then
-            cat dist/.vite/manifest.json
-          else
-            echo "manifest missing"
-          fi
-      - name: Deploy release room
-        uses: peaceiris/actions-gh-pages@v4
+
+      - uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          commit_message: "chore: deploy release room"
+          path: ./dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
 </file>
 
 <file path="package.json">
@@ -3250,7 +3173,7 @@ jobs:
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node scripts/sync-static.js && vite build",
     "preview": "vite preview",
     "test:e2e": "playwright test",
     "docs:pdf": "PATH=\"$(python3 -c 'import site, os; print(os.path.join(site.USER_BASE, \"bin\"))'):$PATH\" pandoc docs/uat-plan.md -o public/assets/cycleready-uat-packet.pdf --pdf-engine=weasyprint"
@@ -3283,7 +3206,6 @@ export default defineConfig({
   base: '/CycleReady/',
   plugins: [react()],
   build: {
-    manifest: true,
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
@@ -3305,75 +3227,7 @@ export default defineConfig({
   </head>
   <body class="bg-slate-950 text-slate-100">
     <div id="root"></div>
-    <script type="module">
-      const LOCAL_HOSTS = ['localhost', '127.0.0.1', '::1'];
-      const CDN_BASE = 'https://cdn.jsdelivr.net/gh/josuejero/CycleReady@gh-pages';
-      const MANIFEST_URL = `${CDN_BASE}/.vite/manifest.json`;
-      const ENTRY_KEY = 'index.html';
-      const DEV_ENTRY = '/src/main.tsx';
-
-      (async () => {
-        if (LOCAL_HOSTS.includes(location.hostname)) {
-          await import(/* @vite-ignore */ DEV_ENTRY);
-          return;
-        }
-        await loadEntry(ENTRY_KEY);
-      })();
-
-      async function loadEntry(entryKey) {
-        try {
-          const manifestResp = await fetch(MANIFEST_URL);
-          if (!manifestResp.ok) {
-            throw new Error(`Could not fetch manifest (${manifestResp.status})`);
-          }
-          const manifest = await manifestResp.json();
-          const entry = manifest[entryKey];
-          if (!entry) {
-            throw new Error(`Manifest entry not found: ${entryKey}`);
-          }
-          const cssFiles = new Set();
-          collectCssFiles(entryKey, manifest, cssFiles);
-          cssFiles.forEach((cssFile) => {
-            const link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = `${CDN_BASE}/${cssFile}`;
-            link.crossOrigin = 'anonymous';
-            document.head.appendChild(link);
-          });
-          const script = document.createElement('script');
-          script.type = 'module';
-          script.crossOrigin = 'anonymous';
-          script.src = `${CDN_BASE}/${entry.file}`;
-          document.body.appendChild(script);
-        } catch (error) {
-          console.error('CycleReady bundle failed to load from CDN', error);
-          const fallback = document.createElement('div');
-          fallback.textContent = 'The app bundle could not be loaded. Please try again later.';
-          Object.assign(fallback.style, {
-            padding: '1rem',
-            margin: '1rem',
-            borderRadius: '0.5rem',
-            backgroundColor: '#7c1dff',
-            color: '#fff',
-            fontFamily: 'system-ui, sans-serif'
-          });
-          document.body.insertBefore(fallback, document.body.firstChild);
-        }
-      }
-
-      function collectCssFiles(entryKey, manifest, cssFiles, seen = new Set()) {
-        if (seen.has(entryKey)) {
-          return;
-        }
-        seen.add(entryKey);
-        const entry = manifest[entryKey];
-        if (!entry) {
-          return;
-        }
-        (entry.css || []).forEach((cssFile) => cssFiles.add(cssFile));
-        (entry.imports || []).forEach((childKey) => collectCssFiles(childKey, manifest, cssFiles, seen));
-      }
-    </script>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
 </file>

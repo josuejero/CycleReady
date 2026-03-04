@@ -1,149 +1,38 @@
-import { useEffect, useMemo, useState } from 'react';
 import LogForm from './components/LogForm';
 import UploadSimulator from './components/UploadSimulator';
 import HistoryList from './components/HistoryList';
 import ReviewerPanel from './components/ReviewerPanel';
 import KeyDatesPanel from './components/KeyDatesPanel';
-import RemindersPanel, { type ReminderItem } from './components/RemindersPanel';
-import { ensureSeededActivities, persistActivities, keyDates, defectSummary, requiredCredits, seedActivities } from './data/seed';
-import type { Activity, FileMetadata, ReviewStatus } from './data/types';
-import { formatDate, daysUntil } from './utils/date';
+import RemindersPanel from './components/RemindersPanel';
+import { useActivityDashboard } from './hooks/useActivityDashboard';
+import { daysUntil, formatDate } from './utils/date';
 
 const basePath = import.meta.env.BASE_URL ?? '/';
 const releaseRoomHref = `${basePath}release-room.html`;
 const releaseSummaryHref = `${basePath}release-summary.html`;
 
 function App() {
-  const [activities, setActivities] = useState<Activity[]>(seedActivities);
-  const [selectedActivityId, setSelectedActivityId] = useState<string | null>(null);
+  const {
+    activities,
+    creditsLogged,
+    completionPercent,
+    upcomingKeyDate,
+    keyDates,
+    statusCounts,
+    reminders,
+    readinessStatus,
+    selectedActivity,
+    handleNewEntry,
+    handleMetadata,
+    handleStatusUpdate,
+    selectActivity,
+    requiredCredits,
+    defectSummary
+  } = useActivityDashboard();
 
-  useEffect(() => {
-    const seeded = ensureSeededActivities();
-    setActivities(seeded);
-  }, []);
-
-  useEffect(() => {
-    if (!selectedActivityId && activities.length) {
-      setSelectedActivityId(activities[0].id);
-    }
-  }, [activities, selectedActivityId]);
-
-  const selectedActivity = useMemo(
-    () => activities.find((activity) => activity.id === selectedActivityId) ?? activities[0],
-    [activities, selectedActivityId]
-  );
-
-  const updateActivities = (updater: (items: Activity[]) => Activity[]) => {
-    setActivities((current) => {
-      const updated = updater(current);
-      persistActivities(updated);
-      return updated;
-    });
-  };
-
-  const creditsLogged = activities.reduce((sum, activity) => sum + activity.credits, 0);
-  const completionPercent = Math.min(100, Math.round((creditsLogged / requiredCredits) * 100));
-
-  const upcomingKeyDate = useMemo(() => {
-    const sorted = [...keyDates].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-    const future = sorted.find((date) => daysUntil(date.date) >= 0);
-    return future ?? sorted[sorted.length - 1];
-  }, []);
-
-  const statusCounts = useMemo(() => {
-    const base: Record<ReviewStatus, number> = {
-      Accepted: 0,
-      'Pending Review': 0,
-      'Needs Correction': 0,
-      Rejected: 0
-    };
-    return activities.reduce((counts, activity) => {
-      counts[activity.status] += 1;
-      return counts;
-    }, base);
-  }, [activities]);
-
-  const readinessStatus = completionPercent >= 80 && defectSummary.critical === 0 ? 'On Track' : 'Monitoring';
-  const reminders: ReminderItem[] = useMemo(() => {
-    return activities
-      .filter((activity) => !activity.metadata || activity.status === 'Needs Correction')
-      .map((activity) => {
-        if (!activity.metadata) {
-          return {
-            id: activity.id,
-            title: activity.title,
-            provider: activity.provider,
-            status: activity.status,
-            reason: `Upload provider certificate metadata for ${activity.category} CME log to satisfy reminders.`,
-            actionLabel: 'Upload metadata',
-            actionHint: 'Required for QA to confirm the NCCPA documentation window.'
-          };
-        }
-        return {
-          id: activity.id,
-          title: activity.title,
-          provider: activity.provider,
-          status: activity.status,
-          reason: 'Reviewer asked for clarification; update status or attach the missing roster.',
-          actionLabel: 'Add notes',
-          actionHint: 'Clarify next steps so the timeline shows progress.'
-        };
-      });
-  }, [activities]);
-
-  const handleNewEntry = (entry: Activity) => {
-    updateActivities((prev) => [entry, ...prev]);
-    setSelectedActivityId(entry.id);
-  };
-
-  const handleMetadata = (activityId: string, metadata: FileMetadata) => {
-    updateActivities((prev) =>
-      prev.map((activity) =>
-        activity.id === activityId
-          ? {
-              ...activity,
-              metadata,
-              timeline: [
-                ...activity.timeline,
-                {
-                  id: `${activity.id}-timeline-${activity.timeline.length}`,
-                  actor: 'Clinician',
-                  action: 'Attached metadata',
-                  detail: metadata.fileName,
-                  timestamp: new Date().toISOString()
-                }
-              ]
-            }
-          : activity
-      )
-    );
-    setSelectedActivityId(activityId);
-  };
-
-  const handleStatusUpdate = (activityId: string, status: ReviewStatus, note?: string) => {
-    updateActivities((prev) =>
-      prev.map((activity) =>
-        activity.id === activityId
-          ? {
-              ...activity,
-              status,
-              reviewerNote: note,
-              timeline: [
-                ...activity.timeline,
-                {
-                  id: `${activity.id}-timeline-${activity.timeline.length}`,
-                  actor: 'Reviewer',
-                  action: status,
-                  detail: note,
-                  timestamp: new Date().toISOString()
-                }
-              ]
-            }
-          : activity
-      )
-    );
-    setSelectedActivityId(activityId);
-  };
+  const nextDueDelta = daysUntil(upcomingKeyDate.date);
+  const dueText =
+    nextDueDelta >= 0 ? `${nextDueDelta} days left` : `${Math.abs(nextDueDelta)} days overdue`;
 
   return (
     <div className="min-h-screen bg-slate-950 pb-16">
@@ -187,7 +76,7 @@ function App() {
                 <p className="text-xs uppercase tracking-[0.4em] text-slate-400">Next due</p>
                 <p className="text-lg font-semibold">{upcomingKeyDate.label}</p>
                 <p className="text-sm text-slate-300">
-                  {formatDate(upcomingKeyDate.date)} · {daysUntil(upcomingKeyDate.date) >= 0 ? `${daysUntil(upcomingKeyDate.date)} days left` : `${Math.abs(daysUntil(upcomingKeyDate.date))} days overdue`}
+                  {formatDate(upcomingKeyDate.date)} · {dueText}
                 </p>
               </div>
               <div className="space-y-1 rounded-2xl border border-amber-500/30 bg-amber-500/5 p-4 text-slate-100">
@@ -212,7 +101,7 @@ function App() {
             </div>
           </div>
 
-          <RemindersPanel reminders={reminders} onAction={(id) => setSelectedActivityId(id)} />
+          <RemindersPanel reminders={reminders} onAction={selectActivity} />
         </section>
 
         <KeyDatesPanel keyDates={keyDates} />

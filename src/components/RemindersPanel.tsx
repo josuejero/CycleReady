@@ -1,14 +1,4 @@
-import type { ReviewStatus } from '../data/types';
-
-export type ReminderItem = {
-  id: string;
-  title: string;
-  provider: string;
-  status: ReviewStatus;
-  reason: string;
-  actionLabel: string;
-  actionHint: string;
-};
+import type { ReminderItem } from '../models/reminder';
 
 export default function RemindersPanel({
   reminders,
