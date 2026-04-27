@@ -1,13 +1,31 @@
-
 # CycleReady QA Release Room
 
-Thin-demo proof of a clinician QA workflow that tracks CME logging, reminders, reviewer interactions, and release readiness for a CME recertification release. Built as a Phase 8 “Release Room” microsite, it bundles the live dashboard, release summary, QA artifacts, and final memo into a single portfolio-ready experience.
+CycleReady is a QA release-readiness demo for a CME recertification workflow. It shows clinician submissions, reviewer actions, reminders, defect tracking, UAT artifacts, Playwright smoke tests, and release signoff evidence in a static React/TypeScript app. This project demonstrates QA analysis, test design, acceptance criteria, defect triage, release reporting, Playwright automation, and GitHub Pages deployment.
+
+## Quick links
+- **Live demo:** [dashboard](https://josuejero.github.io/CycleReady/), [Release Room](https://josuejero.github.io/CycleReady/release-room), [Release Summary](https://josuejero.github.io/CycleReady/release-summary.html)
+- **Screenshots:** [defect board](public/assets/portfolio/defect-board.svg), [UAT checklist](public/assets/portfolio/uat-checklist.svg), [release summary](public/assets/portfolio/release-summary.svg)
+- **Test report:** `docs/playwright-smoke.md`, `playwright-report/index.html` after `npm run test:e2e`
+- **CI workflow:** `.github/workflows/playwright-smoke.yml`, `.github/workflows/pages.yml`
+- **Architecture docs:** `docs/test-strategy.md`, `docs/requirements-traceability-matrix.md`, `docs/uat-plan.md`
+- **Main code to inspect:** `src/components/ReleaseRoomPage.tsx`, `src/data/release-room.ts`, `tests/`, `docs/`
+
+## Employer scan
+**Best fit roles:** QA Automation Engineer, QA Analyst, Software Test Engineer, Release Coordinator  
+**Core stack:** React, TypeScript, Vite, Tailwind CSS, Playwright, GitHub Actions, GitHub Pages  
+**What this proves:** Acceptance criteria, UAT planning, defect triage, smoke automation, release reporting, static deployment  
+**Start here:** `src/components/`, `src/data/release-room.ts`, `docs/`, `.github/workflows/`
+
+## Screenshot gallery
 
 ![Defect board snapshot](public/assets/portfolio/defect-board.svg)
 ![UAT checklist snapshot](public/assets/portfolio/uat-checklist.svg)
 ![Release summary snapshot](public/assets/portfolio/release-summary.svg)
 
 ## Table of contents
+- [Quick links](#quick-links)
+- [Employer scan](#employer-scan)
+- [Screenshot gallery](#screenshot-gallery)
 - [What it demonstrates](#what-it-demonstrates)
 - [Release narrative](#release-narrative)
 - [Data & UX](#data--ux)
