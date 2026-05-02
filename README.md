@@ -25,12 +25,12 @@ CycleReady is a QA release-readiness demo for a CME recertification workflow. It
 | Requirements covered | 15 / 15 |
 | Requirement coverage rate | 100% |
 | Manual test cases | 25 |
-| Automated Playwright tests | 9 |
+| Automated Playwright tests | 27 |
 | Automated pass rate | 100% |
 | Open Sev1 defects | 1 |
 | Open Sev2 defects | 2 |
 | Latest release decision | No-go |
-| Last generated | 2026-05-02T19:39:47.716Z |
+| Last generated | 2026-05-02T20:54:00.976Z |
 
 <!-- METRICS:END -->
 

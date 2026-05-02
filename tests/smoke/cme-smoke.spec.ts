@@ -34,8 +34,15 @@ test('RQ-001 PW-SMOKE-001 successful CME submission queues a new log and surface
   await page.getByLabel('Activity Title').fill('Remote collaboration workflow');
   await page.getByLabel('Provider').fill('Remote CME Consortium');
   await page.getByLabel('Credits').fill('3');
-  await page.getByLabel('Completion date').type('2026-02-28');
+  await page.getByLabel('Completion date').fill('2026-02-28');
   await page.getByLabel('Category').selectOption('Educational');
+
+  await expect(page.getByLabel('Activity Title')).toHaveValue('Remote collaboration workflow');
+  await expect(page.getByLabel('Provider')).toHaveValue('Remote CME Consortium');
+  await expect(page.getByLabel('Credits')).toHaveValue('3');
+  await expect(page.getByLabel('Completion date')).toHaveValue('2026-02-28');
+  await expect(page.getByLabel('Category')).toHaveValue('Educational');
+
   await page.getByRole('button', { name: /Save & queue for review/i }).click();
 
   await expect(page.getByText(/CME log saved locally and pushed into history for review\./)).toBeVisible();
