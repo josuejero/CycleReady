@@ -117,10 +117,3 @@ CycleReady is a QA release-readiness demo for a CME recertification workflow. It
 ## Deployment
 - GitHub Pages workflow (`.github/workflows/pages.yml`) publishes `dist/` from `master`, making the Release Room available at `https://josuejero.github.io/CycleReady/release-room.html` and the summary at `https://josuejero.github.io/CycleReady/release-summary.html`.
 - `npm run docs:pdf` must be rerun whenever `docs/uat-plan.md` changes to keep the published PDF in sync.
-
-## Résumé-ready takeaway
-> Built CycleReady, a synthetic React/TypeScript QA release-readiness demo for a CME workflow with traceable requirements, manual test cases, Playwright smoke/regression automation, structured defect triage, and CI-published release evidence.
-
-## Why it matters
-- Demonstrates ownership across a full QA loop: from clinician submissions through reviewer remediation, through automation, and into the final go/no-go memo.
-- Offers a portfolio-friendly narrative with live release-room evidence, exportable UAT packet, and automation proof points that remix existing Vite/React tooling into a single release-ready experience.
