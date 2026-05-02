@@ -86,11 +86,12 @@ export default function ReleaseSummaryPanel({ compact }: { compact?: boolean }) 
           </div>
         </div>
         <div className="space-y-2 rounded-2xl border border-white/5 bg-slate-950/60 p-4">
-          <p className="text-xs uppercase tracking-[0.4em] text-slate-400">Recommendation</p>
+          <p className="text-xs uppercase tracking-[0.4em] text-slate-400">QA release recommendation</p>
           <div className="flex items-center gap-2">
             <span className="rounded-full border border-cyan-500/80 bg-cyan-500/10 px-3 py-1 text-sm font-semibold text-cyan-200">{releaseSignoffMemo.recommendation}</span>
             <p className="text-xs text-slate-300">{releaseSignoffMemo.rationale ?? 'Ship once remaining blockers have assigned owners and triage notes.'}</p>
           </div>
+          <p className="text-xs text-slate-500">Signed off {releaseSignoffMemo.signoffDate}</p>
         </div>
       </div>
 

@@ -1,0 +1,9 @@
+{
+  "decision": "No-go",
+  "gates": {
+    "automationPassRate": 100,
+    "requirementCoverageRate": 100,
+    "openSev1": 1,
+    "openSev2": 2
+  }
+}

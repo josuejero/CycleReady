@@ -26,11 +26,11 @@ test.beforeEach(async ({ page }) => {
     window.localStorage.clear();
     window.localStorage.setItem(STORAGE_KEY, activities);
   }, serializedActivities);
-  await page.goto('/');
+  await page.goto('/CycleReady/');
   await expect(page.getByRole('heading', { name: /Thin CME QA product/i })).toBeVisible();
 });
 
-test('successful CME submission queues a new log and surfaces the confirmation banner', async ({ page }) => {
+test('RQ-001 PW-SMOKE-001 successful CME submission queues a new log and surfaces confirmation', async ({ page }) => {
   await page.getByLabel('Activity Title').fill('Remote collaboration workflow');
   await page.getByLabel('Provider').fill('Remote CME Consortium');
   await page.getByLabel('Credits').fill('3');
@@ -42,20 +42,20 @@ test('successful CME submission queues a new log and surfaces the confirmation b
   await expect(page.getByText(/Metadata will be added via the upload simulator\./i).first()).toBeVisible();
 });
 
-test('invalid submission is blocked and the validation banner appears', async ({ page }) => {
+test('RQ-011 PW-SMOKE-002 invalid CME submission is blocked and validation appears', async ({ page }) => {
   await page.getByRole('button', { name: /Save & queue for review/i }).click();
 
   await expect(page.getByText(/One or more required fields are invalid/i)).toBeVisible();
   await expect(page.getByText(/Title is required so QA knows which activity to test\./i)).toBeVisible();
 });
 
-test('reminders call out activities that still need supporting metadata', async ({ page }) => {
+test('RQ-013 PW-SMOKE-003 reminders call out activities that still need supporting metadata', async ({ page }) => {
   const reasonText = /Upload provider certificate metadata for Simulation CME log to satisfy reminders\./i;
   await expect(page.getByText(reasonText)).toBeVisible();
   await expect(page.getByRole('button', { name: 'Upload metadata' })).toHaveCount(2);
 });
 
-test('history reflects the latest reviewer update in the detail text', async ({ page }) => {
+test('RQ-004 PW-SMOKE-004 history reflects the latest reviewer update in detail text', async ({ page }) => {
   const reviewNote = 'QA regression note recorded';
   await page.getByRole('radio', { name: 'Needs Correction' }).check();
   await page.getByLabel('Comment').fill(reviewNote);

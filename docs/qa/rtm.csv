@@ -1,0 +1,16 @@
+Requirement ID,Requirement,Workflow Area,Risk Level,Manual Test IDs,Automated Test IDs,UAT IDs,Defect IDs,Status
+RQ-001,New CME entries appear immediately in History when required fields are filled,History,High,TC-001|TC-018,PW-SMOKE-001,UAT-001,,Covered
+RQ-002,Credits are required for submission and missing credits block form entry with inline validation,Log CME,High,TC-002|TC-012,PW-SMOKE-002,UAT-002,,Covered
+RQ-003,Dashboard surfaces reminders when supporting documentation is still needed for documentation-required entries,Reminders,High,TC-003|TC-020,PW-SMOKE-003,UAT-003,CR-401,Covered
+RQ-004,Reviewer can save status updates with reviewer notes,Reviewer Actions,High,TC-004|TC-014,PW-SMOKE-004,UAT-004,CR-312,Covered
+RQ-005,Upload simulator can mark metadata and supporting evidence complete,Upload Support,Medium,TC-005|TC-019,PW-REG-005,UAT-005,,Covered
+RQ-006,Dashboard displays NCCPA-style key dates and due windows,Key Dates,Medium,TC-006|TC-021,,UAT-006,,Covered
+RQ-007,Release Room displays coverage automation defect and evidence links,Release Room,High,TC-007|TC-022,PW-REG-001,UAT-007,,Covered
+RQ-008,Release Summary displays recommendation blockers residual risk and signoff memo,Release Summary,High,TC-008|TC-023,PW-REG-002,UAT-008,,Covered
+RQ-009,Defect board displays severity owner status and next step,Defect Board,High,TC-009|TC-024,,UAT-009,CR-287,Covered
+RQ-010,LocalStorage preserves clinician activities across reloads,Persistence,High,TC-010|TC-025,PW-REG-003,UAT-010,,Covered
+RQ-011,Required form fields prevent invalid CME submissions,Validation,High,TC-011|TC-012,PW-SMOKE-002,UAT-011,,Covered
+RQ-012,History list shows newest submissions first,History,Medium,TC-013|TC-018,PW-SMOKE-001,UAT-012,,Covered
+RQ-013,Reminders identify activities missing required metadata,Reminders,High,TC-015|TC-020,PW-SMOKE-003,UAT-013,CR-401,Covered
+RQ-014,UAT packet and QA documents are linked from release evidence,Documentation,Medium,TC-016|TC-022,PW-REG-001,UAT-014,,Covered
+RQ-015,Static build includes dashboard release room and release summary entrypoints,Static Deployment,Medium,TC-017|TC-023,PW-REG-004,UAT-015,,Covered

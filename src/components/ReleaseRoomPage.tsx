@@ -5,6 +5,7 @@ import {
   releasePacketPdfHref,
   releaseSignoffMemo,
   releaseSummaryPageHref,
+  releaseTests,
   severityBadge
 } from '../data/release-room';
 
@@ -12,7 +13,10 @@ const basePath = import.meta.env.BASE_URL ?? '/';
 const liveAppHref = basePath;
 
 const testEvidenceCards = releaseEvidenceLinks.filter((link) =>
-  link.label === 'Playwright smoke report' || link.label === 'Phase 5 UAT results log'
+  link.label === 'Playwright smoke report' ||
+  link.label === 'Phase 5 UAT results log' ||
+  link.label === 'Metrics summary JSON' ||
+  link.label === 'Release decision JSON'
 );
 
 export default function ReleaseRoomPage() {

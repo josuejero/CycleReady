@@ -1,0 +1,4 @@
+Defect ID,Title,Severity,Priority,Workflow Area,Status,Owner,Requirement ID,Found In,Release Blocker,Opened Date,Closed Date,Retest Status,Regression Test ID
+CR-401,Overdue reminder never clears after metadata upload,Sev1,P1,Reminders,Open,Release QA Lead,RQ-003,UAT,Yes,2026-03-03,,Not Retested,PW-SMOKE-003
+CR-312,Reviewer notes not saving when reviewer updated status,Sev2,P1,Reviewer Actions,Open,Reviewer Services,RQ-004,Smoke,Yes,2026-03-03,,Not Retested,PW-SMOKE-004
+CR-287,Defect board missing owner tag on reopened cards,Sev2,P2,Defect Board,Open,Release QA Lead,RQ-009,Functional,Yes,2026-03-03,,Not Retested,

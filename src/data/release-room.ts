@@ -101,6 +101,16 @@ export const releaseEvidenceLinks: ReleaseEvidenceLink[] = [
     label: 'Triage guidelines',
     description: 'Explains how to keep defect metadata and release blockers current.',
     href: 'docs/triage-guidelines.md'
+  },
+  {
+    label: 'Metrics summary JSON',
+    description: 'Generated QA snapshot with requirements, tests, defects, and release gates.',
+    href: 'reports/latest/metrics-summary.json'
+  },
+  {
+    label: 'Release decision JSON',
+    description: 'Generated go/no-go decision from current release gates.',
+    href: 'reports/latest/release-decision.json'
   }
 ];
 
@@ -115,14 +125,24 @@ export const releaseSignoffMemo: ReleaseSignoffMemo = {
   notTested:
     'Live integrations (GitHub issue APIs), actual clinician accounts, and production databases were not available in this static proof-of-concept.',
   defectSummary:
-    'Critical reminders or reviewer-save regressions remain (see GitHub issues 401 & 312) but do not block the core remediation workflow.',
+    'A Sev1 reminder regression remains open alongside two Sev2 blockers, so the current release evidence does not meet the zero-Sev1 exit gate.',
   residualRisks:
     'Reminder logic and reviewer metadata saving are still in flux; these risks are documented in the defect board and tracked via triage meetings.',
   rationale:
-    'Coverage stands at 90% with zero automation regressions, so ship once Sev1 entry 401 is confirmed with triage markers.',
-  recommendation: 'Ship',
+    'Release is blocked until Sev1 CR-401 is fixed, retested, and covered by regression evidence. Smoke automation is passing, but the release gate requires zero open Sev1 defects.',
+  recommendation: getReleaseRecommendation(releaseDefects),
   signoffDate: 'March 3, 2026'
 };
+
+export function getReleaseRecommendation(defects: ReleaseDefect[]): ReleaseSignoffMemo['recommendation'] {
+  const severityCounts = getSeverityCounts(defects);
+
+  if (severityCounts.sev1 > 0) {
+    return 'Do Not Ship';
+  }
+
+  return 'Ship';
+}
 
 export function getCoveragePercent(coverage: ReleaseStoryCoverage) {
   if (coverage.totalStories === 0) return 0;

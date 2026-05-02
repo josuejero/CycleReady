@@ -1,0 +1,51 @@
+{
+  "generatedAt": "2026-05-02T19:39:47.716Z",
+  "requirements": {
+    "total": 15,
+    "covered": 15,
+    "coverageRate": 100,
+    "withManualTests": 15,
+    "manualCoverageRate": 100,
+    "withAutomatedTests": 13,
+    "automationCoverageRate": 86.7,
+    "withUat": 15,
+    "uatCoverageRate": 100
+  },
+  "tests": {
+    "manual": 25,
+    "automated": {
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0,
+      "passRate": 100,
+      "flakeRate": 0
+    },
+    "unitCoverage": {
+      "lines": 100,
+      "functions": 100,
+      "branches": 92.85,
+      "statements": 100
+    }
+  },
+  "defects": {
+    "total": 3,
+    "open": 3,
+    "openBySeverity": {
+      "sev1": 1,
+      "sev2": 2,
+      "sev3": 0,
+      "sev4": 0
+    }
+  },
+  "release": {
+    "decision": "No-go",
+    "gates": {
+      "automationPassRate": 100,
+      "requirementCoverageRate": 100,
+      "openSev1": 1,
+      "openSev2": 2
+    }
+  }
+}

@@ -1,0 +1,6 @@
+Gate ID,Gate,Required Target,Current Source,Status,Notes
+GATE-001,Smoke and regression suite pass rate,100%,reports/latest/playwright-results.json,Pending,Computed after test run
+GATE-002,Open Sev1 defects,0,docs/qa/defect-log.csv,Fail,CR-401 is open
+GATE-003,Open Sev2 defects,0 or documented workaround,docs/qa/defect-log.csv,Fail,CR-312 and CR-287 are open
+GATE-004,Requirement coverage,100%,docs/qa/rtm.csv,Pending,Computed from RTM
+GATE-005,UAT completion,100%,docs/qa/test-cases.csv,Pending,Computed from UAT and test evidence

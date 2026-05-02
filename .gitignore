@@ -1,5 +1,6 @@
 node_modules/
 dist/
+.DS_Store
 .env
 .vscode/
 .idea/
@@ -7,5 +8,10 @@ dist/
 *.local
 playwright-report/
 test-results/
+reports/latest/playwright-results.json
+reports/coverage/
+reports/lighthouse/
+.lighthouseci/
 public/docs/
 public/playwright-report/
+public/reports/
